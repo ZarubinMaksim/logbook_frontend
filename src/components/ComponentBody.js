@@ -5,13 +5,13 @@ function ComponentBody ({title, onDelete}) {
   const DynamicComponent = lazy(() => import(`./logbooks/${title.charAt(0).toUpperCase()}${title.slice(1)}.js`))
 
   return (
-    <div className='border border-border-grey bg-white h-full p-2'>
-      <div className='border-b border-border-grey  pb-1 flex gap-2 items-center '>
+    <div className='border border-border-grey bg-white h-full p-2 flex flex-col'>
+      <div className='pb-1 flex gap-2 items-center'>
         <img className="w-4 h-4" src={imageUrl}></img>
         <h2 className="capitalize">{title}</h2>
       </div>
 
-      <div className="border-2 bordr-red-200">
+      <div className="flex h-full overflow-scroll">
         <Suspense fallback={<div>Loading...</div>}>
         <DynamicComponent />
         </Suspense>
