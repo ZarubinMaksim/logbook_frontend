@@ -17,7 +17,8 @@ console.log(JSON.parse(localStorage.getItem('umbrellas')))
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const updatedList = [...roomsList, room]
+    const existingRoomsList = roomsList || [];
+    const updatedList = [...existingRoomsList, room]
     setRoomsList(updatedList)
     localStorage.setItem('umbrellas', JSON.stringify(updatedList))
   }
