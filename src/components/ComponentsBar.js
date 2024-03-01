@@ -14,16 +14,12 @@ function ComponentsBar({ onClickAdd, onClickDelete, defaultList, savedList, isLo
   const handleElementClick = (e) => {
     if (isBlocked) {
       lockElementRef.current.classList.add('animate-bounce');
-      // lockElementTextRef.current.classList.remove('hidden');
-      lockElementTextRef.current.classList.add('opacity-100');
-
       setTimeout(() => {
         lockElementRef.current.classList.remove('animate-bounce');
-        lockElementTextRef.current.classList.remove('opacity-100');
-        // lockElementTextRef.current.classList.add('hidden');
-      }, 1500);
+      }, 500);
       
     } else {
+      console.log(e.target)
       if (e.target.localName === 'div') {
         onClickDelete(e);
       } else {
@@ -43,23 +39,29 @@ function ComponentsBar({ onClickAdd, onClickDelete, defaultList, savedList, isLo
     
     if (savedList) {
       if (isInSavedList) {
-        return { blockClass: 'bg-light-purple w-9 h-9 shadow-1-1-4-inner flex justify-center items-center rounded-lg cursor-pointer transition-shadow', imageClass: 'w-7 h-7 pointer-events-none', imageName: `${element}` }; //если есть
+        return { blockClass: 'bg-light-purple w-8 h-8 shadow-1-1-4-inner flex justify-center items-center rounded-full cursor-pointer transition-shadow', imageClass: 'w-5 h-5 pointer-events-none', imageName: `${element}` }; //если есть
       } else {
-        return { blockClass: 'bg-light-grey w-9 h-9 shadow-1-1-4 flex justify-center items-center rounded-lg cursor-pointer transition-shadow', imageClass: 'w-7 h-7 opacity-50', imageName: `${element}-bw` }; //если нет
+        return { blockClass: 'bg-light-grey w-8 h-8 shadow-1-1-4 flex justify-center items-center rounded-full cursor-pointer transition-shadow', imageClass: 'w-5 h-5 opacity-50', imageName: `${element}-bw` }; //если нет
       }
     } else {
       if (isInDefaultList) {
 
-        return { blockClass: 'bg-light-purple w-9 h-9 shadow-1-1-4-inner flex justify-center items-center rounded-lg cursor-pointer transition-shadow', imageClass: 'w-7 h-7 pointer-events-none', imageName: `${element}` }; //если есть
+        return { blockClass: 'bg-light-purple w-8 h-8 shadow-1-1-4-inner flex justify-center items-center rounded-full cursor-pointer transition-shadow', imageClass: 'w-5 h-5 pointer-events-none', imageName: `${element}` }; //если есть
       } else {
-        return { blockClass: 'bg-light-grey w-9 h-9 shadow-1-1-4 flex justify-center items-center rounded-lg cursor-pointer transition-shadow', imageClass: 'w-7 h-7 opacity-50', imageName: `${element}-bw` }; //если нет
+        return { blockClass: 'bg-light-grey w-8 h-8 shadow-1-1-4 flex justify-center items-center rounded-full cursor-pointer transition-shadow', imageClass: 'w-5 h-5 opacity-50', imageName: `${element}-bw` }; //если нет
       }
     }
   };
 
   return (
-    <header className="flex justify-between px-5 py-1 items-center h-16 bg-white shadow-md">
-      <div className="flex gap-4">
+    <header className="flex justify-between px-5 py-1 items-center h-16 bg-white shadow-md rounded-full">
+      <div className='flex py-1.5 px-4 border border-light-grey items-center gap-3 bg-color rounded-full shadow-inner'>
+          {/* <div className='w-8 h-8 bg-light-grey rounded-full flex justify-center items-center'> */}
+            <img id='test' onClick={handleBlockContent} className='w-5 h-5 opacity-50 hover:opacity-100 cursor-pointer transition-opacity' src={isBlocked ? lock : unlock} alt={isBlocked ? "Locked" : "Unlocked"} ref={lockElementRef}></img>
+          {/* </div> */}
+          <p className='opacity-40'> | </p>
+
+        <div className="flex gap-3">
         {elements.map((element, key) => {
           const { blockClass, imageClass, imageName } = handleClassName(element);
           return (
@@ -69,29 +71,21 @@ function ComponentsBar({ onClickAdd, onClickDelete, defaultList, savedList, isLo
           );
         })}
       </div>
+      </div>
 
-      <div className="flex h-full">
 
-        <div className='flex flex-col min-w-14'>
-          <div className='h-full flex items-end justify-center'>
-            <img id='test' onClick={handleBlockContent} className='w-5 h-5 opacity-50 hover:opacity-100 cursor-pointer transition-opacity' src={isBlocked ? lock : unlock} alt={isBlocked ? "Locked" : "Unlocked"} ref={lockElementRef}></img>
-          </div>
-          <p id='test-text' className='opacity-0 px-1 transition-opacity text-xs bg-red-200 rounded w-auto text-center' ref={lockElementTextRef}>Blocked</p>
-        </div>
-        <div className='flex flex-col min-w-14'>
-          <div className='h-full flex items-end justify-center'>
+
+
+
+      <div className="flex h-full items-center justify-center gap-4">
+        
+
             <div className='w-5 h-5 opacity-50 bg-[url("./images/settings-bw.png")] hover:bg-[url("./images/settings.png")] bg-contain outline-0 border-0 hover:opacity-100 cursor-pointer transition-opacity'></div>
-          </div>
-          <p  className='opacity-0 px-1 transition-opacity text-xs bg-red-200 rounded w-auto text-center'>Settings</p>
-        </div>
-        <div className='flex flex-col min-w-14'>
-          <div className='h-full flex items-end justify-center'>
+          
+        
+        
+
             <div className='w-5 h-5 opacity-50 bg-[url("./images/logout-bw.png")] hover:bg-[url("./images/logout.png")] bg-contain outline-0 border-0 hover:opacity-100 cursor-pointer transition-opacity' src={lock}></div>
-          </div>
-          <p  className='opacity-0 px-1 transition-opacity text-xs bg-red-200 rounded w-auto text-center'>Exit</p>
-        </div>
-
-
       </div>
     </header>
   );

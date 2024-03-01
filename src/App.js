@@ -122,7 +122,7 @@ function App() {
   }
   console.log(savedList)
   return (
-    <div className='bg-color h-screen'> 
+    <div className='bg-color h-screen p-4'> 
       <ComponentsBar 
         onClickAdd={handlePlusElement}
         onClickDelete={handleDeleteElement}

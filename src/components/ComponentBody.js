@@ -1,6 +1,8 @@
+import { lazy, Suspense } from "react"
 
 function ComponentBody ({title, onDelete}) {
   const imageUrl = require(`../images/${title}.png`)
+  const DynamicComponent = lazy(() => import(`./logbooks/${title.charAt(0).toUpperCase()}${title.slice(1)}.js`))
 
   return (
     <div className='border border-border-grey bg-white h-full p-2'>
@@ -10,7 +12,9 @@ function ComponentBody ({title, onDelete}) {
       </div>
 
       <div className="border-2 bordr-red-200">
-        <p>content</p>
+        <Suspense fallback={<div>Loading...</div>}>
+        <DynamicComponent />
+        </Suspense>
       </div>
     </div>
 
