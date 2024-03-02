@@ -146,9 +146,7 @@ function App() {
         savedList.map((element, key) => (
           <div key={element}>
             <ComponentBody 
-              title={element} 
-              onDelete={handleDeleteElement}
-              
+              title={element}               
               />
           </div>
           ))
@@ -156,8 +154,6 @@ function App() {
         list.map((element, key) => (
           <div key={element}>
             <ComponentBody title={element}
-            onDelete={handleDeleteElement}
-            
             />
           </div>
         ))
