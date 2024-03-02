@@ -146,7 +146,8 @@ function App() {
         savedList.map((element, key) => (
           <div key={element}>
             <ComponentBody 
-              title={element}               
+              title={element}     
+              isUnlocked={draggable}          
               />
           </div>
           ))
@@ -154,6 +155,7 @@ function App() {
         list.map((element, key) => (
           <div key={element}>
             <ComponentBody title={element}
+            isUnlocked={draggable}
             />
           </div>
         ))

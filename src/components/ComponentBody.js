@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react"
-import undo from '../images/undo.png'
+import undoImg from '../images/undo.png'
 
-function ComponentBody ({title, onDelete}) {
+function ComponentBody ({title, isUnlocked}) {
   const imageUrl = require(`../images/${title}.png`)
   const DynamicComponent = lazy(() => import(`./logbooks/${title.charAt(0).toUpperCase()}${title.slice(1)}.js`))
   const [room, setRoom] = useState()
@@ -59,7 +59,7 @@ function ComponentBody ({title, onDelete}) {
         <h2 className="capitalize">{title}</h2>
       </div>
 
-      <div className="flex h-full overflow-scroll">
+      <div className={isUnlocked ? ("flex h-full overflow-scroll opacity-40 pointer-events-none") : ("flex h-full overflow-scroll")} >
         <Suspense fallback={<div>Loading...</div>}>
           <DynamicComponent 
             handleSubmit = {handleSubmit}
@@ -70,7 +70,7 @@ function ComponentBody ({title, onDelete}) {
             handleDelete = {handleDelete}
             isDeleted = {isDeleted}
             handleUnDo = {handleUnDo}
-            undo = {undo}
+            undoImg = {undoImg}
           />
         </Suspense>
       </div>

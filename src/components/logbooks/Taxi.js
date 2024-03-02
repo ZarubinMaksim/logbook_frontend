@@ -1,4 +1,4 @@
-function Taxi({ handleSubmit, dataRef, valueRef, handleChange, savedData, handleDelete, isDeleted, handleUnDo, undo}) {
+function Taxi({ handleSubmit, dataRef, valueRef, handleChange, savedData, handleDelete, isDeleted, handleUnDo, undoImg}) {
 
   return(
     <div className="flex flex-col">
@@ -17,7 +17,7 @@ function Taxi({ handleSubmit, dataRef, valueRef, handleChange, savedData, handle
           })) : (null)}
           {isDeleted ? (
             <div className="cursor-pointer opacity-50 hover:opacity-100 transition-opacity" onClick={handleUnDo}>
-              <img className="w-5 h-5 cursor-pointer" src={undo}  />
+              <img className="w-5 h-5 cursor-pointer" src={undoImg}  />
             </div>
             ) : (null)}
       </div>

@@ -17,8 +17,8 @@ module.exports = {
         
       },
       boxShadow: {
-        '1-1-4': '1px 1px 4px rgb(0 0 0 / 0.25)',
-        '1-1-4-inner': 'inset 1px 1px 4px rgb(0 0 0 / 0.25)'
+        '1-1-4': '1px 1px 3px rgb(0 0 0 / 0.25)',
+        '1-1-4-inner': 'inset 1px 1px 3px rgb(0 0 0 / 0.25)'
       },
       backgroundImage: {
         // 'settings': "url('./src/images/settings.png')"
