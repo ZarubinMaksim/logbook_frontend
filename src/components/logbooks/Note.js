@@ -14,7 +14,7 @@ function Note() {
   }
 
   return(
-    <div className="h-full">
+    <div className="h-full w-full">
       <textarea onInput={handleInputText} defaultValue={getText()} placeholder="Write something here.." className="shadow-1-1-4-inner p-1 w-full h-full resize-none "></textarea>
     </div>
   )
