@@ -10,6 +10,10 @@ function ComponentBody ({title, isUnlocked}) {
   const [isDeleted, setIsDeleted] = useState(false)
   const dataRef = useRef()
   const valueRef = useRef()
+  const valueRef_2 = useRef()
+
+  console.log('345', roomsList)
+
 
   const handleChange = (e) => {
     const {name, value} = e.target
@@ -31,11 +35,12 @@ function ComponentBody ({title, isUnlocked}) {
     const updatedList = [...existingRoomsList, room]
     setRoomsList(updatedList)
     localStorage.setItem(`${title}`, JSON.stringify(updatedList))
-    resetInputs()
+    // resetInputs()
   }
 
   const handleDelete = (e) => {
     setIsDeleted(true)
+    console.log('23', savedData)
     const updatedList = savedData.filter(item => item.room !== e.target.id)
     const deletedElement = savedData.find(item => item.room === e.target.id)
     setRoomsList(updatedList)
@@ -59,12 +64,13 @@ function ComponentBody ({title, isUnlocked}) {
         <h2 className="capitalize">{title}</h2>
       </div>
 
-      <div className={isUnlocked ? ("flex h-full overflow-scroll opacity-40 pointer-events-none") : ("flex h-full overflow-scroll")} >
+      <div className={isUnlocked ? ("flex h-full overflow-scroll opacity-20 pointer-events-none transition-opacity") : ("flex h-full overflow-scroll")} >
         <Suspense fallback={<div>Loading...</div>}>
           <DynamicComponent 
             handleSubmit = {handleSubmit}
             dataRef = {dataRef}
             valueRef = {valueRef}
+            valueRef_2 = {valueRef_2}
             handleChange = {handleChange}
             savedData = {savedData}
             handleDelete = {handleDelete}

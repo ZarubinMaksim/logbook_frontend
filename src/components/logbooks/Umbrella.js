@@ -1,7 +1,15 @@
 import { useEffect, useRef, useState } from "react"
 
 function Umbrella({ handleSubmit, dataRef, valueRef, handleChange, savedData, handleDelete, isDeleted, handleUnDo, undoImg}) {
-
+    const [content, setContent] = useState(false)
+    const [idE, setIde] = useState(null)
+    const mouse = (id) => {
+      setContent(true)
+      setIde(id)
+    }
+    const mouse2 = () => {
+      setContent(false)
+    }
   return(
     <div className="flex flex-col">
       <form onSubmit={handleSubmit} className='flex'>
@@ -12,8 +20,9 @@ function Umbrella({ handleSubmit, dataRef, valueRef, handleChange, savedData, ha
       <div className="flex flex-wrap justify-center items-center gap-2 p-2">
         {savedData ? (savedData.map((room) => {
             return (
-                <div onClick={handleDelete} id={room.room} className="w-fit flex items-center justify-center px-2 rounded bg-light-purple opacity-70 shadow-1-1-4 hover:shadow-1-1-4-inner hover:bg-red-200 cursor-pointer hover:line-through hover:opacity-100 transition">
-                  <p className="pointer-events-none">{room.room}-{room.umbrella}</p>
+                <div onClick={handleDelete} onMouseEnter={() => mouse(room.room)} onMouseLeave={mouse2} id={room.room} className="w-fit flex items-center justify-center px-2 rounded bg-light-purple opacity-70 shadow-1-1-4 hover:shadow-1-1-4-inner hover:bg-red-200 cursor-pointer hover:opacity-100 transition">
+                  {content && idE === room.room ? (<p>Delete</p>) : (<p className='' id={room.room}>{room.room}-{room.umbrella}</p>) }
+                  
                 </div>
             )
           })) : (null)}
