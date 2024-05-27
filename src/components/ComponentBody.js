@@ -12,7 +12,6 @@ function ComponentBody ({title, isUnlocked}) {
   const valueRef = useRef()
   const valueRef_2 = useRef()
 
-  console.log('345', roomsList)
 
 
   const handleChange = (e) => {
@@ -38,9 +37,9 @@ function ComponentBody ({title, isUnlocked}) {
     // resetInputs()
   }
 
-  const handleDelete = (e) => {
+  const handleDelete = (e, key) => {
     setIsDeleted(true)
-    console.log('23', savedData)
+    console.log('23', e.target.id, key)
     const updatedList = savedData.filter(item => item.room !== e.target.id)
     const deletedElement = savedData.find(item => item.room === e.target.id)
     setRoomsList(updatedList)
@@ -58,13 +57,13 @@ function ComponentBody ({title, isUnlocked}) {
   }
 
   return (
-    <div className='border border-border-grey bg-white h-full p-2 flex flex-col'>
-      <div className='pb-1 flex gap-2 items-center'>
-        <img className="w-4 h-4" src={imageUrl}></img>
-        <h2 className="capitalize">{title}</h2>
+    <div className='border border-border-grey bg-white h-full flex flex-col'>
+      <div className='bg-dark-blue p-1 mb-2'>
+        {/* <img className="w-4 h-4" src={imageUrl}></img> */}
+        <h2 className="capitalize font-mainfont text-header-focus">{title}</h2>
       </div>
 
-      <div className={isUnlocked ? ("flex h-full overflow-scroll opacity-20 pointer-events-none transition-opacity") : ("flex h-full overflow-scroll")} >
+      <div className={isUnlocked ? ("flex h-full overflow-scroll opacity-20 pointer-events-none transition-opacity px-3") : ("text-main-black font-mainfont flex h-full overflow-scroll px-3")} >
         <Suspense fallback={<div>Loading...</div>}>
           <DynamicComponent 
             handleSubmit = {handleSubmit}

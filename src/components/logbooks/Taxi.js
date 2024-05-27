@@ -3,6 +3,8 @@ import { useState } from 'react'
 import arrivals from '../../images/arrivals.png'
 import departures from '../../images/departures.png'
 import setting from '../../images/settings.png'
+import Button from './logbooks_components/Button'
+import UndoButton from './logbooks_components/UndoButton'
 
 function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, savedData, handleDelete, isDeleted, handleUnDo, undoImg}) {
   const [showForm, setShowForm] = useState(false)
@@ -38,10 +40,8 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
  const clas2 = 'h-48'
   return(
     <div className="flex flex-col w-full">
-      <button type="button" onClick={handleShowForm} className="border border-border-grey cursor-pointer hover:shadow-1-1-4-inner hover:bg-light-purple w-full">Add a ride</button>
-      {/* <div className={`border-2 border-red-500 h-10 ${showInfo ? clas2 : null}`}>
-        <p>hui</p> 
-      </div> */}
+      <Button type='button' title='Add a ride' showForm={handleShowForm}/>
+
       {showForm ? (
         <form onSubmit={handleSubmit} className='flex flex-col gap-2 h-fit items-center justify-center py-2'>
           <div className='flex w-4/5 justify-around'>
@@ -69,7 +69,7 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
               <input type='tel' name='tel' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Phone number' onInput={handleChange}></input>
             </>
           )}
-          <button type="submit" className="border border-border-grey cursor-pointer hover:shadow-1-1-4-inner hover:bg-light-purple w-4/5">Save</button>
+          <Button type='submit' title='Add' width='w-4/5'/>
         </form>
       ) : (
         <div className="flex flex-wrap justify-center items-center gap-2 p-2">
@@ -80,7 +80,7 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
           const [year, month, date] = fullDate
             return (
               // {route: 'transfer', room: '7898', flight: 'su778', time: '12:23', pax: '1'} 
-                <div onClick={() => handleShowInfo(room.room)} id={room.room} className={`${showInfo && hiddenRoom === room.room ? clas2 : 'h-6'} w-fit items-center justify-center px-2 rounded bg-light-purple opacity-70 shadow-1-1-4 cursor-pointer transition-height duration-700 overflow-scroll hover:shadow-1-1-4-inner hover:opacity-100`}>
+                <div onClick={() => handleShowInfo(room.room)} id={room.room} className={`${showInfo && hiddenRoom === room.room ? clas2 : 'h-6'} w-fit items-center justify-center px-2 rounded bg-blue opacity-70 shadow-1-1-4 cursor-pointer transition-height duration-700 overflow-scroll hover:bg-blue-active hover:opacity-100`}>
                   <p className={` pointer-events-none ${showInfo && hiddenRoom === room.room ? 'hidden' : 'flex flex-wrap'} items-center`}>
                     {`${date}.${month}`} {time} {<img className='w-5 h-5 ml-2' src={room.route === 'pickup' ? arrivals : departures}/>}
                   </p>
@@ -106,11 +106,8 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
                 </div>
             )
           })) : (null)}
-          {isDeleted ? (
-            <div className="cursor-pointer opacity-50 hover:opacity-100 transition-opacity" onClick={handleUnDo}>
-              <img className="w-5 h-5 cursor-pointer" src={undoImg}  />
-            </div>
-            ) : (null)}
+          <UndoButton isDeleted={isDeleted}
+          handleUnDo={handleUnDo} />
       </div>
       )}
     </div>

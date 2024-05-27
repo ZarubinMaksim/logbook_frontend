@@ -56,6 +56,7 @@ function App() {
   };
 
   const handlePlusElement = (e) => {
+    console.log('plus', e)
     const newElementName = e.target.id;
     const listOfLayouts = JSON.parse(localStorage.getItem('list-of-layouts'))
 
@@ -80,6 +81,7 @@ function App() {
   };
 
   const handleDeleteElement = (e) => {
+    console.log('minus', e)
     const elementTodelete = e.target.id;
     const listOfLayouts = JSON.parse(localStorage.getItem('list-of-layouts'))
     const savedLayouts = JSON.parse(localStorage.getItem('layout'))
@@ -122,7 +124,7 @@ function App() {
   }
   console.log(savedList)
   return (
-    <div className='bg-color h-screen p-4'> 
+    <div className='bg-color h-screen'> 
       <ComponentsBar 
         onClickAdd={handlePlusElement}
         onClickDelete={handleDeleteElement}
