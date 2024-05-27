@@ -7,6 +7,7 @@ import "react-resizable/css/styles.css";
 import ComponentBody from './components/ComponentBody';
 import defaultLayouts from './defaultLayout';
 import ComponentsBar from './components/ComponentsBar';
+import Popup from './components/Popups/Popup';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -16,6 +17,12 @@ function App() {
   const [breakpoint, setBreakpoint] = useState('')
   const [layouts, setLayouts] = useState(() => getLayouts());
   const [draggable, setIsDraggable] = useState(false)
+  
+  const [isPopupOpened, setIsPopupOpened] = useState(false)
+  const [popupTitle, setPopupTitle] = useState('')
+    const [popupData, setPopupData] = useState(null)
+
+
 
   function handleCurrentBreakpoint() {
     const width = window.innerWidth;
@@ -124,7 +131,7 @@ function App() {
   }
   console.log(savedList)
   return (
-    <div className='bg-color h-screen'> 
+    <div className='bg-color h-screen '> 
       <ComponentsBar 
         onClickAdd={handlePlusElement}
         onClickDelete={handleDeleteElement}
@@ -149,7 +156,11 @@ function App() {
           <div key={element}>
             <ComponentBody 
               title={element}     
-              isUnlocked={draggable}          
+              isUnlocked={draggable}
+              setPopupTitle={setPopupTitle}   
+              setIsPopupOpened={setIsPopupOpened}
+              setPopupData={setPopupData}
+     
               />
           </div>
           ))
@@ -158,6 +169,10 @@ function App() {
           <div key={element}>
             <ComponentBody title={element}
             isUnlocked={draggable}
+            setPopupTitle={setPopupTitle}   
+            setIsPopupOpened={setIsPopupOpened}
+            setPopupData={setPopupData}     
+
             />
           </div>
         ))
@@ -165,9 +180,14 @@ function App() {
 
       }
 
-
-        
-      </ResponsiveGridLayout>      
+      </ResponsiveGridLayout> 
+      
+      {isPopupOpened && <Popup 
+      popupTitle={popupTitle}
+      setIsPopupOpened={setIsPopupOpened}
+      popupData={popupData}
+      />
+      }
     </div>
   );
 }

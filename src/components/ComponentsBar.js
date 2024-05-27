@@ -75,7 +75,6 @@ console.log('testSL', savedList)
 
         <div className="flex">
           {elements.map((element, key) => {
-            console.log(element)
             const { navSquaredBlock, navCircledBlock, navImageStyle, navImageName, navTextStyle } = handleClassName(element);
             return (
               <div key={key} onClick={handleElementClick} id={element} className={navSquaredBlock}>

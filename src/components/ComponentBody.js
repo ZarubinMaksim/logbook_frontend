@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react"
 import undoImg from '../images/undo.png'
 
-function ComponentBody ({title, isUnlocked}) {
+function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, setPopupData}) {
   const imageUrl = require(`../images/${title}.png`)
   const DynamicComponent = lazy(() => import(`./logbooks/${title.charAt(0).toUpperCase()}${title.slice(1)}.js`))
   const [room, setRoom] = useState()
@@ -66,11 +66,15 @@ function ComponentBody ({title, isUnlocked}) {
       <div className={isUnlocked ? ("flex h-full overflow-scroll opacity-20 pointer-events-none transition-opacity px-3") : ("text-main-black font-mainfont flex h-full overflow-scroll px-3")} >
         <Suspense fallback={<div>Loading...</div>}>
           <DynamicComponent 
+            title={title}
             handleSubmit = {handleSubmit}
             dataRef = {dataRef}
             valueRef = {valueRef}
             valueRef_2 = {valueRef_2}
             handleChange = {handleChange}
+            setIsPopupOpened = {setIsPopupOpened}
+            setPopupData = {setPopupData}
+            setPopupTitle = {setPopupTitle}
             savedData = {savedData}
             handleDelete = {handleDelete}
             isDeleted = {isDeleted}

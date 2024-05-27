@@ -1,9 +1,11 @@
 import { constants } from "buffer"
 import { useEffect, useState } from "react"
 import mail from '../../images/mail.png'
+import Form from "../Forms/Form"
+import FormContacts from "../Forms/FormContacts"
 import Button from "./logbooks_components/Button"
 
-function Contacts({ handleChange, handleSubmit, savedData}) {
+function Contacts({ handleChange, handleSubmit, savedData, setPopupTitle, setIsPopupOpened, setPopupData, title}) {
   const [showForm, setShowForm] = useState(false)
   const [currentDepFilter, setCurrentDepFilter] = useState(null)
   const [isFilterButtonActive, setIsFilterButtonActive] = useState(false)
@@ -50,31 +52,34 @@ function Contacts({ handleChange, handleSubmit, savedData}) {
     }
   }
 
-  const handleShowInfo = (contact) => {
-    setHiddenInfoId(contact.department + contact.name + contact.phone)
-    if (hiddenInfoId === contact.department + contact.name + contact.phone) {
-      setShowInfo(false)
-      setHiddenInfoId(null)
-    } else {
-      setShowInfo(true)
-    }
-    
+  const handleShowInfo = (dm) => {
+    // setHiddenInfoId(contact.department + contact.name + contact.phone)
+    // if (hiddenInfoId === contact.department + contact.name + contact.phone) {
+    //   setShowInfo(false)
+    //   setHiddenInfoId(null)
+    // } else {
+    //   setShowInfo(true)
+    // }
+    setIsPopupOpened(true)
+    setPopupData(dm)
+    setPopupTitle(title)
   }
 
   return(
     <div className="flex flex-col gap-2 w-full">
       <Button showForm={handleShowForm} title='Add a contact' type='button'/>
       {showForm ? (
-        <form onSubmit={handleSubmit} className='flex flex-col gap-2 h-fit items-center justify-center py-2'>
-          <input type='text' name='department' placeholder='Department'  className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
-          <input type='text' name='firstname' placeholder='First name' className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
-          <input type='text' name='name' placeholder='Name' className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
-          <input type='text' name='middlename' placeholder='Middle name' className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
-          <input type='text' name='phone' placeholder='Phone' className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
-          <input type='text' name='mobile' placeholder='Mobile phone' className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
-          <input type='text' name='email' placeholder='E-mail' className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
-          <Button type='submit' title='Add'/>
-        </form>
+        <Form onSubmit={handleSubmit} onChange={handleChange} title={title}/>
+        // <form onSubmit={handleSubmit} className='flex flex-col gap-2 h-fit items-center justify-center py-2'>
+        //   <input type='text' name='department' placeholder='Department'  className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
+        //   <input type='text' name='firstname' placeholder='First name' className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
+        //   <input type='text' name='name' placeholder='Name' className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
+        //   <input type='text' name='middlename' placeholder='Middle name' className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
+        //   <input type='text' name='phone' placeholder='Phone' className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
+        //   <input type='text' name='mobile' placeholder='Mobile phone' className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
+        //   <input type='text' name='email' placeholder='E-mail' className="w-full border text-s border-border-grey px-1 cursor-pointer" onInput={handleChange}></input>
+        //   <Button type='submit' title='Add'/>
+        // </form>
       ) : (
       <div className="flex flex-col">
 
@@ -82,7 +87,7 @@ function Contacts({ handleChange, handleSubmit, savedData}) {
           {departmentsList.length >= 3 ? (
             departmentsList.map((deps) => {
               return (
-                <button onClick={handleFilterClick} className={`${currentDepFilter && currentDepFilter.includes(deps) ? 'bg-light-purple' : 'bg-light-grey'} text-xs px-1 uppercase hover:bg-grey`}>{deps}</button>
+                <button onClick={handleFilterClick} className={`${currentDepFilter && currentDepFilter.includes(deps) ? 'bg-dark-blue text-textcolor hover:text-black' : 'bg-blue'} text-xs px-1 uppercase hover:bg-blue-active`}>{deps}</button>
               )
             })
           ) : (null)}
@@ -113,7 +118,7 @@ function Contacts({ handleChange, handleSubmit, savedData}) {
                               <p className="capitalize">E-mail: {contact.email}</p>
                             </div>
                           ) : (
-                          <div className="w-full flex justify-between items-center">
+                          <div className="w-full flex justify-between items-center hover:bg-blue-active pl-2 pr-1">
                             <p className=" capitalize pointer-events-none">{`${contact.firstname} ${contact.name[0]}.`}</p>
                             <p className=" pointer-events-none">{contact.phone}</p>
                             <a href={`mailto:${contact.email}`} className=''> 

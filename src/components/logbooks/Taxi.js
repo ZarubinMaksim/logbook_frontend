@@ -3,12 +3,14 @@ import { useState } from 'react'
 import arrivals from '../../images/arrivals.png'
 import departures from '../../images/departures.png'
 import setting from '../../images/settings.png'
+import Form from '../Forms/Form'
+import Popup from '../Popups/Popup'
 import Button from './logbooks_components/Button'
 import UndoButton from './logbooks_components/UndoButton'
 
-function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, savedData, handleDelete, isDeleted, handleUnDo, undoImg}) {
+function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, savedData, title, handleDelete, isDeleted, handleUnDo, undoImg, setPopupTitle, setIsPopupOpened, setPopupData}) {
   const [showForm, setShowForm] = useState(false)
-  const [isTransferClicked, setIsTransferClicked] = useState(false)
+  // const [isTransferClicked, setIsTransferClicked] = useState(false)
   const [hiddenRoom, setHiddenRoom] = useState(null)
   const [showInfo, setShowInfo] = useState(false)
   const [showNestedInfo, setShowNestedInfo] = useState(false);
@@ -16,61 +18,66 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
     setShowForm(!showForm)
   }
 
-  const handleTransferClick = () => {
-    setIsTransferClicked(true)
-  }
+  // const handleTransferClick = () => {
+  //   setIsTransferClicked(true)
+  // }
 
-  const handlePickUpClick = () => {
-    setIsTransferClicked(false)
-  }
+  // const handlePickUpClick = () => {
+  //   setIsTransferClicked(false)
+  // }
 
-  const handleShowInfo = (roomID) => {
-    setShowNestedInfo(false)
-    setHiddenRoom(roomID)
-    setShowInfo(true)
-    setTimeout(() => {
-      setShowNestedInfo(true)
-    }, 700)
-    if (hiddenRoom === roomID) {
-      setShowInfo(!showInfo)
-    }
+  const handleShowInfo = (rd) => {
+    console.log('555', rd)
+    // setShowNestedInfo(false)
+    // setHiddenRoom(roomID)
+    // setShowInfo(true)
+    // setTimeout(() => {
+    //   setShowNestedInfo(true)
+    // }, 700)
+    // if (hiddenRoom === roomID) {
+    //   setShowInfo(!showInfo)
+    // }
+    
+    setIsPopupOpened(true)
+    setPopupData(rd)
+    setPopupTitle(title)
   }
 //h-6 w-fit flex flex-col items-center justify-center px-2 rounded bg-light-purple opacity-70 shadow-1-1-4 cursor-pointer hover:shadow-1-1-4-inner hover:bg-red-200  hover:line-through hove:opacity-100
 
- const clas2 = 'h-48'
+//  const clas2 = 'h-48'
   return(
     <div className="flex flex-col w-full">
       <Button type='button' title='Add a ride' showForm={handleShowForm}/>
-
       {showForm ? (
-        <form onSubmit={handleSubmit} className='flex flex-col gap-2 h-fit items-center justify-center py-2'>
-          <div className='flex w-4/5 justify-around'>
-            <label className='flex flex-col gap-1 cursor-pointer'>
-              <input type='radio' name='route' value='pickup' className="border text-s border-border-grey px-1 cursor-pointer" onClick={handlePickUpClick} onInput={handleChange}></input>
-              <p className='text-xs'>Pickup</p>
-            </label>
-            <label className='flex flex-col gap-1 cursor-pointer'>
-              <input type='radio' name='route' value='transfer' className="border text-s border-border-grey px-1 cursor-pointer" onClick={handleTransferClick} onInput={handleChange}></input>
-              <p className='text-xs'>Transfer</p>
-            </label>
-          </div>
-          {isTransferClicked ? (
-            <>
-              <input type='text' name='room' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Room' onInput={handleChange}></input>
-              <input type='date' name="time" ref={valueRef} className="border text-xs border-border-grey w-4/5 p-1"  placeholder='Time' onInput={handleChange}></input> 
-              <input type='text' name='pax' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Pax' onInput={handleChange}></input>
-            </>
-          ) : (
-            <>
-              <input type='text' name='room' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Room' onInput={handleChange}></input>
-              <input type='datetime-local' name="time" ref={valueRef} className="border text-xs border-border-grey w-4/5 p-1"  placeholder='Time' onInput={handleChange}></input> 
-              <input type='text' name='flight' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Flight number' onInput={handleChange}></input>
-              <input type='text' name='pax' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Pax' onInput={handleChange}></input>
-              <input type='tel' name='tel' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Phone number' onInput={handleChange}></input>
-            </>
-          )}
-          <Button type='submit' title='Add' width='w-4/5'/>
-        </form>
+        <Form onSubmit={handleSubmit} onChange={handleChange} title={title}/>
+        // <form onSubmit={handleSubmit} className='flex flex-col gap-2 h-fit items-center justify-center py-2'>
+        //   <div className='flex w-4/5 justify-around'>
+        //     <label className='flex flex-col gap-1 cursor-pointer'>
+        //       <input type='radio' name='route' value='pickup' className="border text-s border-border-grey px-1 cursor-pointer" onClick={handlePickUpClick} onInput={handleChange}></input>
+        //       <p className='text-xs'>Pickup</p>
+        //     </label>
+        //     <label className='flex flex-col gap-1 cursor-pointer'>
+        //       <input type='radio' name='route' value='transfer' className="border text-s border-border-grey px-1 cursor-pointer" onClick={handleTransferClick} onInput={handleChange}></input>
+        //       <p className='text-xs'>Transfer</p>
+        //     </label>
+        //   </div>
+        //   {isTransferClicked ? (
+        //     <>
+        //       <input type='text' name='room' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Room' onInput={handleChange}></input>
+        //       <input type='date' name="time" ref={valueRef} className="border text-xs border-border-grey w-4/5 p-1"  placeholder='Time' onInput={handleChange}></input> 
+        //       <input type='text' name='pax' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Pax' onInput={handleChange}></input>
+        //     </>
+        //   ) : (
+        //     <>
+        //       <input type='text' name='room' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Room' onInput={handleChange}></input>
+        //       <input type='datetime-local' name="time" ref={valueRef} className="border text-xs border-border-grey w-4/5 p-1"  placeholder='Time' onInput={handleChange}></input> 
+        //       <input type='text' name='flight' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Flight number' onInput={handleChange}></input>
+        //       <input type='text' name='pax' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Pax' onInput={handleChange}></input>
+        //       <input type='tel' name='tel' ref={dataRef} className="border text-xs border-border-grey w-4/5 p-1" placeholder='Phone number' onInput={handleChange}></input>
+        //     </>
+        //   )}
+        //   <Button type='submit' title='Add' width='w-4/5'/>
+        // </form>
       ) : (
         <div className="flex flex-wrap justify-center items-center gap-2 p-2">
         {savedData ? (savedData.map((room) => {
@@ -80,11 +87,11 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
           const [year, month, date] = fullDate
             return (
               // {route: 'transfer', room: '7898', flight: 'su778', time: '12:23', pax: '1'} 
-                <div onClick={() => handleShowInfo(room.room)} id={room.room} className={`${showInfo && hiddenRoom === room.room ? clas2 : 'h-6'} w-fit items-center justify-center px-2 rounded bg-blue opacity-70 shadow-1-1-4 cursor-pointer transition-height duration-700 overflow-scroll hover:bg-blue-active hover:opacity-100`}>
-                  <p className={` pointer-events-none ${showInfo && hiddenRoom === room.room ? 'hidden' : 'flex flex-wrap'} items-center`}>
+                <div onClick={() => handleShowInfo(room)} id={room.room} className={`h-6 w-fit items-center justify-center px-2 rounded bg-blue opacity-70 shadow-1-1-4 cursor-pointer transition-height duration-700 overflow-scroll hover:bg-blue-active hover:opacity-100`}>
+                  <p className={`pointer-events-none flex flex-wrap items-center`}>
                     {`${date}.${month}`} {time} {<img className='w-5 h-5 ml-2' src={room.route === 'pickup' ? arrivals : departures}/>}
                   </p>
-                  {showInfo && hiddenRoom === room.room && (
+                  {/* {showInfo && hiddenRoom === room.room && (
                     <div className={`${showNestedInfo ? 'opacity-100' : 'opacity-0'} flex flex-col transition-opacity`}>
                       <div className='flex gap-2 self-end mt-2' >
                         <div onClick={handleDelete} id={room.room}>
@@ -102,14 +109,17 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
                       <p>Pax: {room.pax}</p>  
                       <p>Ph: {room.tel}</p>
                     </div>
-                  )}
+                    
+                  )} */}
                 </div>
             )
           })) : (null)}
           <UndoButton isDeleted={isDeleted}
           handleUnDo={handleUnDo} />
+          
       </div>
       )}
+      
     </div>
   )
 }
