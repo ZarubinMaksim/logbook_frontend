@@ -1,6 +1,11 @@
+// 1. при логине запрос на сервер на получение всех данных
+// 2. дальше сохранение этих данный в локал сторедж
+// 3. 
+
 import logo from './logo.svg';
 import './App.css';
 import React, { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { Responsive, WidthProvider } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -22,7 +27,10 @@ function App() {
   const [popupTitle, setPopupTitle] = useState('')
     const [popupData, setPopupData] = useState(null)
 
+    const [deletedFromPopupData, setDeletedFromPopupData] = useState(null)
 
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   function handleCurrentBreakpoint() {
     const width = window.innerWidth;
@@ -129,17 +137,20 @@ function App() {
     // }
     // console.log('to delete', e.target.id, listOfLayouts, savedLayouts, newListAfterDelete)
   }
-  console.log(savedList)
+
   return (
-    <div className='bg-color h-screen '> 
-      <ComponentsBar 
-        onClickAdd={handlePlusElement}
-        onClickDelete={handleDeleteElement}
-        savedList={savedList}
-        defaultList={list}
-        isLocked={setIsDraggable}
-      />
-      <ResponsiveGridLayout
+    <div className='bg-color h-screen overflow-scroll'> 
+    <Routes>
+      <Route path='/logbook' element={
+        <>
+          <ComponentsBar 
+          onClickAdd={handlePlusElement}
+          onClickDelete={handleDeleteElement}
+          savedList={savedList}
+          defaultList={list}
+          isLocked={setIsDraggable}
+        />
+        <ResponsiveGridLayout
         className=""
         layouts={layouts}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
@@ -160,7 +171,7 @@ function App() {
               setPopupTitle={setPopupTitle}   
               setIsPopupOpened={setIsPopupOpened}
               setPopupData={setPopupData}
-     
+              deletedFromPopupData={deletedFromPopupData}
               />
           </div>
           ))
@@ -172,7 +183,7 @@ function App() {
             setPopupTitle={setPopupTitle}   
             setIsPopupOpened={setIsPopupOpened}
             setPopupData={setPopupData}     
-
+            deletedFromPopupData={deletedFromPopupData}
             />
           </div>
         ))
@@ -186,8 +197,14 @@ function App() {
       popupTitle={popupTitle}
       setIsPopupOpened={setIsPopupOpened}
       popupData={popupData}
+      setDeletedFromPopupData={setDeletedFromPopupData}
       />
       }
+      </>
+    } />
+    </Routes>
+      
+      
     </div>
   );
 }

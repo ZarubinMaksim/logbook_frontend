@@ -6,6 +6,12 @@ module.exports = {
       'mainfont': 'Montserrat'
     },
     extend: {
+      width: {
+        '22': '5.5rem'
+      },
+      height: {
+        '22': '5.5rem'
+      },
       transitionProperty: {
         'height': 'height',
         'display': 'display',
@@ -15,6 +21,16 @@ module.exports = {
       transitionDuration: {
         '2000': '1100ms',
       },
+      animation: {
+        'lockAnimation': 'pulsate 0.5s ease-in-out infinite both'
+      },
+      keyframes: {
+        pulsate: {
+          '0%': { transform: 'scale(1)'},
+          '50%': {transform: 'scale(1.3)'},
+          '100%': {transform: 'scale(1)'}
+        }
+      }, 
       colors: {
         'light-grey': '#EAEAEA', 
         'light-purple': '#E6F4E5',

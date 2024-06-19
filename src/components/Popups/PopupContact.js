@@ -1,6 +1,6 @@
 
 function PopupContact({data}) {
-  console.log('contact', data)
+
 
  return (
   <div className="font-mainfont text-lg">

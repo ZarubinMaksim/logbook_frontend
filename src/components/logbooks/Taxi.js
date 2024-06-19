@@ -7,8 +7,10 @@ import Form from '../Forms/Form'
 import Popup from '../Popups/Popup'
 import Button from './logbooks_components/Button'
 import UndoButton from './logbooks_components/UndoButton'
+import calendarIcon from '../../images/calendar.png'
+import clockIcon from '../../images/clock.png'
 
-function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, savedData, title, handleDelete, isDeleted, handleUnDo, undoImg, setPopupTitle, setIsPopupOpened, setPopupData}) {
+function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, savedData, title, handleDelete, isDeleted, handleUnDo, undoImg, setPopupTitle, setIsPopupOpened, setPopupData, isDeletedFromPopup}) {
   const [showForm, setShowForm] = useState(false)
   // const [isTransferClicked, setIsTransferClicked] = useState(false)
   const [hiddenRoom, setHiddenRoom] = useState(null)
@@ -42,6 +44,12 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
     setPopupData(rd)
     setPopupTitle(title)
   }
+
+  const handleSubmitForm = (event) => {
+    handleSubmit(event)
+    setShowForm(!showForm)
+  }
+  
 //h-6 w-fit flex flex-col items-center justify-center px-2 rounded bg-light-purple opacity-70 shadow-1-1-4 cursor-pointer hover:shadow-1-1-4-inner hover:bg-red-200  hover:line-through hove:opacity-100
 
 //  const clas2 = 'h-48'
@@ -49,7 +57,7 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
     <div className="flex flex-col w-full">
       <Button type='button' title='Add a ride' showForm={handleShowForm}/>
       {showForm ? (
-        <Form onSubmit={handleSubmit} onChange={handleChange} title={title}/>
+        <Form onSubmit={(event) => handleSubmitForm(event)} onChange={handleChange} title={title}/>
         // <form onSubmit={handleSubmit} className='flex flex-col gap-2 h-fit items-center justify-center py-2'>
         //   <div className='flex w-4/5 justify-around'>
         //     <label className='flex flex-col gap-1 cursor-pointer'>
@@ -81,41 +89,40 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
       ) : (
         <div className="flex flex-wrap justify-center items-center gap-2 p-2">
         {savedData ? (savedData.map((room) => {
+          console.log('222',savedData)
           const dateTime = room.time.split('T')
           const fullDate = dateTime[0].split('-')
           const time = dateTime[1]
           const [year, month, date] = fullDate
             return (
               // {route: 'transfer', room: '7898', flight: 'su778', time: '12:23', pax: '1'} 
-                <div onClick={() => handleShowInfo(room)} id={room.room} className={`h-6 w-fit items-center justify-center px-2 rounded bg-blue opacity-70 shadow-1-1-4 cursor-pointer transition-height duration-700 overflow-scroll hover:bg-blue-active hover:opacity-100`}>
-                  <p className={`pointer-events-none flex flex-wrap items-center`}>
-                    {`${date}.${month}`} {time} {<img className='w-5 h-5 ml-2' src={room.route === 'pickup' ? arrivals : departures}/>}
-                  </p>
-                  {/* {showInfo && hiddenRoom === room.room && (
-                    <div className={`${showNestedInfo ? 'opacity-100' : 'opacity-0'} flex flex-col transition-opacity`}>
-                      <div className='flex gap-2 self-end mt-2' >
-                        <div onClick={handleDelete} id={room.room}>
-                          <img className='w-4 h-4' src={setting} ></img>
-                        </div>
-                        <div onClick={handleDelete} id={room.room}>
-                          <img className='w-4 h-4' src={setting} ></img>  
-                        </div>
-                      </div>
-                      <p>Route: {room.route}</p>
-                      <p>Date: {fullDate.join('-')}</p>
-                      <p>Time: {time}</p>
-                      <p>Room: {room.room}</p>  
-                      <p>Flight: {room.flight}</p>
-                      <p>Pax: {room.pax}</p>  
-                      <p>Ph: {room.tel}</p>
-                    </div>
-                    
-                  )} */}
+                <div onClick={() => handleShowInfo(room)} id={room.room} className={`h-7 w-fit flex items-center justify-center px-2 rounded bg-blue opacity-70 shadow-1-1-4 cursor-pointer transition-height duration-700 overflow-scroll hover:bg-blue-active hover:opacity-100`}>
+                  <div className='flex items-center gap-2'>
+
+                <div className="flex gap-1">
+                  <img src={calendarIcon} className='w-4 h-4 mt-0.5'></img>
+                  <p className={`pointer-events-none flex flex-wrap items-center`}>{`${date}.${month}`}</p>
+                </div>
+
+                {time && 
+                  <div className="flex gap-1">
+                  <img src={clockIcon} className='w-4 h-4 mt-0.5'></img>
+                  <p> {time} </p>
+                </div>
+                }
+
+
+                {<img className='w-4 h-4 ml-2' src={room.route === 'pickup' ? arrivals : departures}/>}
+
+              </div>
+                
                 </div>
             )
           })) : (null)}
-          <UndoButton isDeleted={isDeleted}
-          handleUnDo={handleUnDo} />
+          <UndoButton 
+            isDeleted={isDeleted}
+            isDeletedFromPopup={isDeletedFromPopup}
+            handleUnDo={handleUnDo} />
           
       </div>
       )}
