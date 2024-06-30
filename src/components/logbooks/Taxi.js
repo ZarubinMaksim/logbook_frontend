@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import arrivals from '../../images/arrivals.png'
 import departures from '../../images/departures.png'
 import setting from '../../images/settings.png'
@@ -9,8 +9,9 @@ import Button from './logbooks_components/Button'
 import UndoButton from './logbooks_components/UndoButton'
 import calendarIcon from '../../images/calendar.png'
 import clockIcon from '../../images/clock.png'
+import MainApi from '../../utils/MainApi'
 
-function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, savedData, title, handleDelete, isDeleted, handleUnDo, undoImg, setPopupTitle, setIsPopupOpened, setPopupData, isDeletedFromPopup}) {
+function Taxi({ dataRef, valueRef, valueRef_2, title, handleDelete, isDeleted, handleUnDo, undoImg, setPopupTitle, setIsPopupOpened, setPopupData, isDeletedFromPopup}) {
   const [showForm, setShowForm] = useState(false)
   // const [isTransferClicked, setIsTransferClicked] = useState(false)
   const [hiddenRoom, setHiddenRoom] = useState(null)
@@ -19,6 +20,54 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
   const handleShowForm = () => {
     setShowForm(!showForm)
   }
+
+  //---------------------
+  const [taxi, setTaxi] = useState()
+  const [taxiesList, setTaxiesList] = useState([])
+
+  const handleChange = (e) => {
+    const {name, value} = e.target
+    setTaxi({...taxi, [name]: value})
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const { route, room, date, flight, pax, phone } = taxi
+    MainApi.setTaxi(route, room, date, flight, pax, phone)
+    .then((response) => {
+      const newTaxi = response.data
+      setTaxiesList([...taxiesList, newTaxi])
+    })
+    setShowForm(!showForm)
+  }
+
+  useEffect(() => {
+    const cachedTaxies = JSON.parse(localStorage.getItem('taxies'))
+    if (cachedTaxies) {
+      setTaxiesList(cachedTaxies)
+    }
+
+    updateTaxies()
+  }, [])
+
+  const updateTaxies = () => {
+    MainApi.getTaxies()
+    .then((taxies) => {
+      setTaxiesList(taxies.data)
+      localStorage.setItem('taxies', JSON.stringify(taxies.data))
+    
+    })
+    .catch((err) => {
+      console.log('Error fetching alarms:', err)
+    })
+  }
+
+  useEffect(() => {
+    updateTaxies()
+  }, [isDeletedFromPopup])
+
+//---------------------
+
 
   // const handleTransferClick = () => {
   //   setIsTransferClicked(true)
@@ -45,10 +94,10 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
     setPopupTitle(title)
   }
 
-  const handleSubmitForm = (event) => {
-    handleSubmit(event)
-    setShowForm(!showForm)
-  }
+  // const handleSubmitForm = (event) => {
+  //   handleSubmit(event)
+  //   setShowForm(!showForm)
+  // }
   
 //h-6 w-fit flex flex-col items-center justify-center px-2 rounded bg-light-purple opacity-70 shadow-1-1-4 cursor-pointer hover:shadow-1-1-4-inner hover:bg-red-200  hover:line-through hove:opacity-100
 
@@ -57,7 +106,7 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
     <div className="flex flex-col w-full">
       <Button type='button' title='Add a ride' showForm={handleShowForm}/>
       {showForm ? (
-        <Form onSubmit={(event) => handleSubmitForm(event)} onChange={handleChange} title={title}/>
+        <Form onSubmit={handleSubmit} onChange={handleChange} title={title}/>
         // <form onSubmit={handleSubmit} className='flex flex-col gap-2 h-fit items-center justify-center py-2'>
         //   <div className='flex w-4/5 justify-around'>
         //     <label className='flex flex-col gap-1 cursor-pointer'>
@@ -88,9 +137,8 @@ function Taxi({ handleSubmit, dataRef, valueRef, valueRef_2, handleChange, saved
         // </form>
       ) : (
         <div className="flex flex-wrap justify-center items-center gap-2 p-2">
-        {savedData ? (savedData.map((room) => {
-          console.log('222',savedData)
-          const dateTime = room.time.split('T')
+        {taxiesList ? (taxiesList.map((room) => {
+          const dateTime = room.date.split('T')
           const fullDate = dateTime[0].split('-')
           const time = dateTime[1]
           const [year, month, date] = fullDate

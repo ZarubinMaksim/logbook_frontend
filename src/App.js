@@ -13,6 +13,7 @@ import ComponentBody from './components/ComponentBody';
 import defaultLayouts from './defaultLayout';
 import ComponentsBar from './components/ComponentsBar';
 import Popup from './components/Popups/Popup';
+import Login from './components/Login';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -26,8 +27,9 @@ function App() {
   const [isPopupOpened, setIsPopupOpened] = useState(false)
   const [popupTitle, setPopupTitle] = useState('')
     const [popupData, setPopupData] = useState(null)
-
+  const [isDeletedFromPopup, setIsDeletedFromPopup] = useState(false)
     const [deletedFromPopupData, setDeletedFromPopupData] = useState(null)
+    const [isUpdatedFromPopup, setIsUpdatedFromPopup] = useState(false)
 
 
     const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -141,6 +143,7 @@ function App() {
   return (
     <div className='bg-color h-screen overflow-scroll'> 
     <Routes>
+      <Route path='/login' element={<Login />} />
       <Route path='/logbook' element={
         <>
           <ComponentsBar 
@@ -172,6 +175,8 @@ function App() {
               setIsPopupOpened={setIsPopupOpened}
               setPopupData={setPopupData}
               deletedFromPopupData={deletedFromPopupData}
+              isDeletedFromPopup={isDeletedFromPopup}
+              isUpdatedFromPopup={isUpdatedFromPopup}
               />
           </div>
           ))
@@ -184,6 +189,8 @@ function App() {
             setIsPopupOpened={setIsPopupOpened}
             setPopupData={setPopupData}     
             deletedFromPopupData={deletedFromPopupData}
+            isDeletedFromPopup={isDeletedFromPopup}
+            isUpdatedFromPopup={isUpdatedFromPopup}
             />
           </div>
         ))
@@ -198,6 +205,10 @@ function App() {
       setIsPopupOpened={setIsPopupOpened}
       popupData={popupData}
       setDeletedFromPopupData={setDeletedFromPopupData}
+      isDeletedFromPopup={isDeletedFromPopup}
+      setIsDeletedFromPopup={setIsDeletedFromPopup}
+      isUpdatedFromPopup={isUpdatedFromPopup}
+      setIsUpdatedFromPopup={setIsUpdatedFromPopup}
       />
       }
       </>

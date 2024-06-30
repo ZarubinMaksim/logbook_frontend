@@ -30,16 +30,16 @@ function FormTaxi({ onChange, inputClass }) {
       {isTransferClicked ? (
         <>
           <input type='text' name='room'  className={inputClass} placeholder='Room' onInput={onChange} required maxLength='6'></input>
-          <input type='date' name="time"  className={inputClass}  placeholder='Time' onInput={onChange}></input> 
+          <input type='datetime-local' name="date"  className={inputClass}  placeholder='Time' onInput={onChange}></input> 
           <input type='text' name='pax'  className={inputClass} placeholder='Pax' onInput={onChange} maxLength='2'></input>
         </>
       ) : (
         <>
           <input type='text' name='room'  className={inputClass} placeholder='Room' onInput={onChange} required maxLength='6' ></input>
-          <input type='datetime-local' name="time"  className={inputClass}  placeholder='Time' onInput={onChange}></input> 
+          <input type='datetime-local' name="date"  className={inputClass}  placeholder='Time' onInput={onChange}></input> 
           <input type='text' name='flight'  className={inputClass} placeholder='Flight number' onInput={onChange} maxLength='7'></input>
           <input type='text' name='pax'  className={inputClass} placeholder='Pax' onInput={onChange} maxLength='2'></input>
-          <input type='tel' name='tel'  className={inputClass} placeholder='Phone number' onInput={onChange} maxLength='20'></input>
+          <input type='tel' name='phone'  className={inputClass} placeholder='Phone number' onInput={onChange} maxLength='20'></input>
         </>
       )}
     </>

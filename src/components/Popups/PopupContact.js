@@ -1,6 +1,19 @@
+import { useEffect } from "react"
+import MainApi from "../../utils/MainApi"
 
-function PopupContact({data}) {
+function PopupContact({data, isDeleteClicked, setIsDeletedFromPopup, isDeletedFromPopup, handleClosePopup}) {
 
+  useEffect(() => {
+    if (isDeleteClicked) {
+      MainApi.deleteContact(data._id)
+      .then((response) => {
+        if (response) {
+          setIsDeletedFromPopup(!isDeletedFromPopup)
+          handleClosePopup()
+        }
+      })
+    }
+  }, [isDeleteClicked])
 
  return (
   <div className="font-mainfont text-lg">

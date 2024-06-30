@@ -1,16 +1,70 @@
 import { constants } from "buffer"
 import { useEffect, useState } from "react"
 import mail from '../../images/mail.png'
+import MainApi from "../../utils/MainApi"
 import Form from "../Forms/Form"
 import FormContacts from "../Forms/FormContacts"
 import Button from "./logbooks_components/Button"
 
-function Contacts({ handleChange, handleSubmit, savedData, setPopupTitle, setIsPopupOpened, setPopupData, title}) {
+function Contacts({  savedData, setPopupTitle, setIsPopupOpened, setPopupData, title, isDeletedFromPopup}) {
   const [showForm, setShowForm] = useState(false)
   const [currentDepFilter, setCurrentDepFilter] = useState(null)
   const [isFilterButtonActive, setIsFilterButtonActive] = useState(false)
   const [showInfo, setShowInfo] = useState(false)
   const [hiddenInfoId, setHiddenInfoId] = useState(null)
+
+//---------------------
+const [contact, setContact] = useState()
+const [contactsList, setContactsList] = useState([])
+
+const handleChange = (e) => {
+  const {name, value} = e.target
+  setContact({...contact, [name]: value})
+  console.log(contact)
+}
+
+const handleSubmit = (e) => {
+  console.log('contact succsesful in alert.js')
+  e.preventDefault()
+  console.log('43434')
+  const { department, firstname, name, middlename, phone, mobile, email } = contact
+  MainApi.setContact(department, firstname, name, middlename, phone, mobile, email)
+  .then((response) => {
+    const newContact = response.data
+    setContactsList([...contactsList, newContact])
+  })
+  setShowForm(!showForm)
+}
+
+useEffect(() => {
+  const cachedContacts = JSON.parse(localStorage.getItem('contacts'))
+  if (cachedContacts) {
+    setContactsList(cachedContacts)
+  }
+
+  updateContacts()
+}, [])
+
+useEffect(() => {
+  getDepartments()
+}, [contactsList])
+
+const updateContacts = () => {
+  MainApi.getContacts()
+  .then((contacts) => {
+    setContactsList(contacts.data)
+    localStorage.setItem('contacts', JSON.stringify(contacts.data))
+  })
+  .catch((err) => {
+    console.log('Error fetching alarms:', err)
+  })
+}
+
+useEffect(() => {
+  updateContacts()
+}, [isDeletedFromPopup])
+//---------------------
+
 
   const handleShowForm = () => {
     setShowForm(!showForm)
@@ -20,9 +74,9 @@ function Contacts({ handleChange, handleSubmit, savedData, setPopupTitle, setIsP
   const [departmentsList, setDepartmentsList] = useState([])
   // const [auto, setAuto] = useState(null)
 
-  useEffect(() => {
-    getDepartments()
-  },[savedData])
+  // useEffect(() => {
+  //   getDepartments()
+  // },[savedData])
 
   // const handleAuto = (e) => {
   //   setAuto(e.target.textContent)
@@ -30,16 +84,21 @@ function Contacts({ handleChange, handleSubmit, savedData, setPopupTitle, setIsP
 
   const getDepartments = () => {
     const newList = []
-    if (savedData) {
-      savedData.map((contact) => {
+
+    if (contactsList) {
+      contactsList.map((contact) => {
+
         if (newList.includes(contact.department.toLowerCase())) {
+
           return
         } else {
+
           newList.push(contact.department)
         }
       })
     }
     setDepartmentsList(newList)
+
   }
 
   const handleFilterClick = (e) => {
@@ -107,8 +166,8 @@ function Contacts({ handleChange, handleSubmit, savedData, setPopupTitle, setIsP
                   <p className="uppercase">{department}</p>
                   <p className="bg-black h-0.5 grow"></p>
                 </div>
-                {savedData ? (
-                  savedData.map((contact) => {
+                {contactsList ? (
+                  contactsList.map((contact) => {
                     if (contact.department.toLowerCase() === department.toLowerCase()) {
                       return (
                         // <div className="border-2 border-red-300 flex gap-2 items-center cursor-pointer transition px-1"  >

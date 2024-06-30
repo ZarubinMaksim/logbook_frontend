@@ -1,8 +1,21 @@
+import { useEffect } from "react"
+import MainApi from "../../utils/MainApi"
 
-function PopupTaxi({data}) {
-   console.log('taxi', data)
+function PopupTaxi({data, isDeleteClicked, setIsDeletedFromPopup, isDeletedFromPopup, handleClosePopup}) {
 
-   const dateTime = data.time.split('T')
+  useEffect(() => {
+    if (isDeleteClicked) {
+      MainApi.deleteTaxi(data._id)
+      .then((response) => {
+        if (response) {
+          setIsDeletedFromPopup(!isDeletedFromPopup)
+          handleClosePopup()
+        }
+      })
+    }
+  }, [isDeleteClicked])
+
+   const dateTime = data.date.split('T')
    const fullDate = dateTime[0].split('-')
    const time = dateTime[1]
 

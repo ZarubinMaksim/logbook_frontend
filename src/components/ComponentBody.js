@@ -1,16 +1,17 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react"
 import undoImg from '../images/undo.png'
 import help from '../images/help.png'
+import MainApi from "../utils/MainApi"
 
-// 
+// isDeletedFromPopup={isDeletedFromPopup}
 
-function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, setPopupData, deletedFromPopupData}) {
+function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, setPopupData, deletedFromPopupData, isDeletedFromPopup, isUpdatedFromPopup}) {
   const DynamicComponent = lazy(() => import(`./logbooks/${title.charAt(0).toUpperCase()}${title.slice(1)}.js`))
   const [room, setRoom] = useState()
   const [roomsList, setRoomsList] = useState(JSON.parse(localStorage.getItem(`${title}`)));
   const savedData = JSON.parse(localStorage.getItem(`${title}`))
   const [isDeleted, setIsDeleted] = useState(false)
-  const [isDeletedFromPopup, setIsDeletedFromPopup] = useState(false)
+  // const [isDeletedFromPopup, setIsDeletedFromPopup] = useState(false)
   const dataRef = useRef()
   const valueRef = useRef()
   const valueRef_2 = useRef()
@@ -24,18 +25,18 @@ function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, set
     JSON.parse(localStorage.getItem(`${title}`))
   }, [roomsList])
 
-  useEffect(() => {
-    if (deletedFromPopupData !== null) {
-      handleDeleteFromPopup(deletedFromPopupData)
-    }
-  }, [deletedFromPopupData])
+  // useEffect(() => {
+  //   if (deletedFromPopupData !== null) {
+  //     handleDeleteFromPopup(deletedFromPopupData)
+  //   }
+  // }, [deletedFromPopupData])
 
   // const resetInputs = () => {
   //   dataRef.current.value = ''
   //   valueRef.current.value = ''
   // }
   
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, title) => {
     e.preventDefault()
     const existingRoomsList = roomsList || [];
     const updatedList = [...existingRoomsList, room]
@@ -45,6 +46,7 @@ function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, set
     e.target.reset()
     // resetInputs()
   }
+
 
   const handleDelete = (e) => {
     console.log(e)
@@ -56,19 +58,19 @@ function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, set
     localStorage.setItem(`${title}-last-deleted`, JSON.stringify(deletedElement))
   }
 
-  const handleDeleteFromPopup = (data) => {
-    // setIsDeleted(true)
-    setIsDeletedFromPopup(true)
-    const updatedList = savedData && savedData.filter(item => item.room !== data.room)
-    const deletedElement = savedData && savedData.find(item => item.room === data.room)
-    setRoomsList(updatedList)
-    localStorage.setItem(`${title}`, JSON.stringify(updatedList))
-    localStorage.setItem(`${title}-last-deleted`, JSON.stringify(deletedElement))
-  }
+  // const handleDeleteFromPopup = (data) => {
+  //   // setIsDeleted(true)
+  //   setIsDeletedFromPopup(true)
+  //   const updatedList = savedData && savedData.filter(item => item.room !== data.room)
+  //   const deletedElement = savedData && savedData.find(item => item.room === data.room)
+  //   setRoomsList(updatedList)
+  //   localStorage.setItem(`${title}`, JSON.stringify(updatedList))
+  //   localStorage.setItem(`${title}-last-deleted`, JSON.stringify(deletedElement))
+  // }
 
   const handleUnDo = () => {
     setIsDeleted(false)
-    setIsDeletedFromPopup(false)
+    // setIsDeletedFromPopup(false)
     const lastDeletedElement = JSON.parse(localStorage.getItem(`${title}-last-deleted`))
     const existingRoomsList = roomsList || [];
     const updatedList = [...existingRoomsList, lastDeletedElement]
@@ -117,6 +119,7 @@ function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, set
                 savedData = {savedData}
                 handleDelete = {handleDelete}
                 isDeletedFromPopup = {isDeletedFromPopup}
+                isUpdatedFromPopup={isUpdatedFromPopup}
                 isDeleted = {isDeleted}
                 handleUnDo = {handleUnDo}
                 undoImg = {undoImg}
