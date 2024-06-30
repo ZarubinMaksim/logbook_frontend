@@ -7,7 +7,7 @@ import Button from "./logbooks_components/Button";
 import UndoButton from "./logbooks_components/UndoButton";
 import MainApi from "../../utils/MainApi";
 
-function Invoice({title, setIsPopupOpened, setPopupTitle, setPopupData, handleUnDo, isDeleted, isDeletedFromPopup}) {
+function Invoice({title, setIsPopupOpened, setPopupTitle, setPopupData, handleUnDo, isDeleted, isDeletedFromPopup, isUpdatedFromPopup}) {
   const [showForm, setShowForm] = useState(false)
   const [hiddenRoom, setHiddenRoom] = useState(null)
   const [showNestedInfo, setShowNestedInfo] = useState(false);
@@ -45,6 +45,10 @@ function Invoice({title, setIsPopupOpened, setPopupTitle, setPopupData, handleUn
 
     updateInvoices()
   }, [])
+
+  useEffect(() => {
+    updateInvoices()
+  }, [isUpdatedFromPopup])
 
   const updateInvoices = () => {
     MainApi.getInvoices()
@@ -108,8 +112,8 @@ function Invoice({title, setIsPopupOpened, setPopupTitle, setPopupData, handleUn
                 // onClick={() => handleShowInfo(invoice)}
                 onMouseEnter={() => mouseHover(invoice._id)}
                 onMouseLeave={() => setShowContent(false)}
-                className={`w-24 h-7 flex w-fit items-center justify-center rounded bg-blue opacity-70 shadow-1-1-4 cursor-pointer transition-height duration-700 overflow-scroll hover:bg-blue-active hover:opacity-100`}>
-                  {showContent && elementId === invoice._id ? 
+                className={`w-22 h-8 flex items-center justify-center rounded bg-blue opacity-70 shadow-1-1-4 hover:shadow-1-1-4-inner cursor-pointer hover:opacity-100 transition`}>
+                {showContent && elementId === invoice._id ? 
                   (
                     <div className="flex justify-between w-full h-full">
                     <div className="flex items-center justify-center hover:bg-green-200 w-1/2" onClick={() => handleShowInfo(invoice)}>

@@ -48,7 +48,7 @@ function PopupAlarm({data, isDeleteClicked, setIsDeletedFromPopup, isDeletedFrom
         <label for='room' className="text-black text-sm mt-2">New room</label>
         <input value={alarm.room} onChange={handleChange} className="border text-xs border-border-grey w-1/3 h-7 px-1" name="room" placeholder="Room" onInput={handleChange} maxLength='6' required></input>
         <label for='date' className="text-black text-sm mt-2">New date</label>
-        <input type='datetime-local' className="border text-xs border-border-grey w-full h-7 px-1" name="alertText" placeholder="Enter Alert" onInput={handleChange} maxLength='' required></input>
+        <input type='datetime-local' className="border text-xs border-border-grey w-full h-7 px-1" name="date" onInput={handleChange} maxLength='' required></input>
         <button type='submit'>Save</button>
       </form>
     ) : (

@@ -6,7 +6,7 @@ import Form from "../Forms/Form"
 import FormContacts from "../Forms/FormContacts"
 import Button from "./logbooks_components/Button"
 
-function Contacts({  savedData, setPopupTitle, setIsPopupOpened, setPopupData, title, isDeletedFromPopup}) {
+function Contacts({  savedData, setPopupTitle, setIsPopupOpened, setPopupData, title, isDeletedFromPopup, isUpdatedFromPopup}) {
   const [showForm, setShowForm] = useState(false)
   const [currentDepFilter, setCurrentDepFilter] = useState(null)
   const [isFilterButtonActive, setIsFilterButtonActive] = useState(false)
@@ -63,6 +63,10 @@ const updateContacts = () => {
 useEffect(() => {
   updateContacts()
 }, [isDeletedFromPopup])
+
+useEffect(() => {
+  updateContacts()
+}, [isUpdatedFromPopup])
 //---------------------
 
 

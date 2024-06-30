@@ -129,6 +129,15 @@ const deleteInvoice = (id) => {
   })
 }
 
+const updateInvoice = (id, room, company, vat, details, email) => {
+  return fetch(`${baseUrl}/invoice/${id}`, {
+    method: 'PATCH',
+    headers: headers,
+    body: JSON.stringify({ room, company, vat, details, email })
+  })
+  .then(getResponseData)
+}
+
 //---------***--------INVOICE END---------***--------//
 
 
@@ -161,6 +170,15 @@ const deleteContact = (id) => {
   .catch((err) => {
     console.error(`Error:`, err)
   })
+}
+
+const updateContact = (id, department, firstname, name, middlename, phone, mobile, email) => {
+  return fetch(`${baseUrl}/contact/${id}`, {
+    method: 'PATCH',
+    headers: headers,
+    body: JSON.stringify({ department, firstname, name, middlename, phone, mobile, email })
+  })
+  .then(getResponseData)
 }
 
 //---------***--------CONTACTS END---------***--------//
@@ -274,10 +292,12 @@ const MainApi = {
   updateAlert,
   setInvoice,
   getInvoices,
+  updateInvoice,
   deleteInvoice,
   setContact,
   getContacts,
   deleteContact,
+  updateContact,
   setTaxi,
   getTaxies,
   deleteTaxi,
