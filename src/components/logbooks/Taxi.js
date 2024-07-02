@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 import arrivals from '../../images/arrivals.png'
 import departures from '../../images/departures.png'
 import setting from '../../images/settings.png'
+import deleteBtn from '../../images/delete.png'
+import popupBtn from '../../images/popup.png'
 import Form from '../Forms/Form'
 import Popup from '../Popups/Popup'
 import Button from './logbooks_components/Button'
@@ -11,12 +13,14 @@ import calendarIcon from '../../images/calendar.png'
 import clockIcon from '../../images/clock.png'
 import MainApi from '../../utils/MainApi'
 
-function Taxi({ dataRef, valueRef, valueRef_2, title, handleDelete, isDeleted, handleUnDo, undoImg, setPopupTitle, setIsPopupOpened, setPopupData, isDeletedFromPopup}) {
+function Taxi({ dataRef, valueRef, valueRef_2, title, isDeleted, handleUnDo, undoImg, setPopupTitle, setIsPopupOpened, setPopupData, isDeletedFromPopup, isUpdatedFromPopup}) {
   const [showForm, setShowForm] = useState(false)
   // const [isTransferClicked, setIsTransferClicked] = useState(false)
   const [hiddenRoom, setHiddenRoom] = useState(null)
   const [showInfo, setShowInfo] = useState(false)
   const [showNestedInfo, setShowNestedInfo] = useState(false);
+  const [showContent, setShowContent] = useState(false)
+  const [elementId, setElementId] = useState(null)
   const handleShowForm = () => {
     setShowForm(!showForm)
   }
@@ -41,6 +45,13 @@ function Taxi({ dataRef, valueRef, valueRef_2, title, handleDelete, isDeleted, h
     setShowForm(!showForm)
   }
 
+  const handleDelete = (element) => {
+    MainApi.deleteTaxi(element._id)
+    const updatedTaxiesList = taxiesList.filter((elem) => elem._id !== element._id)
+    setTaxiesList(updatedTaxiesList)
+    localStorage.setItem('taxies', JSON.stringify(updatedTaxiesList))
+  }
+
   useEffect(() => {
     const cachedTaxies = JSON.parse(localStorage.getItem('taxies'))
     if (cachedTaxies) {
@@ -49,6 +60,10 @@ function Taxi({ dataRef, valueRef, valueRef_2, title, handleDelete, isDeleted, h
 
     updateTaxies()
   }, [])
+
+  useEffect(() => {
+    updateTaxies()
+  }, [isUpdatedFromPopup])
 
   const updateTaxies = () => {
     MainApi.getTaxies()
@@ -67,6 +82,11 @@ function Taxi({ dataRef, valueRef, valueRef_2, title, handleDelete, isDeleted, h
   }, [isDeletedFromPopup])
 
 //---------------------
+
+const mouseHover = (id) => {
+  setShowContent(true)
+  setElementId(id)
+}
 
 
   // const handleTransferClick = () => {
@@ -144,26 +164,33 @@ function Taxi({ dataRef, valueRef, valueRef_2, title, handleDelete, isDeleted, h
           const [year, month, date] = fullDate
             return (
               // {route: 'transfer', room: '7898', flight: 'su778', time: '12:23', pax: '1'} 
-                <div onClick={() => handleShowInfo(room)} id={room.room} className={`h-7 w-fit flex items-center justify-center px-2 rounded bg-blue opacity-70 shadow-1-1-4 cursor-pointer transition-height duration-700 overflow-scroll hover:bg-blue-active hover:opacity-100`}>
+                <div onMouseEnter={() => mouseHover(room._id)} onMouseLeave={() => setShowContent(false)} id={room.room} className={` w-48 h-8 flex items-center justify-center rounded bg-blue opacity-70 shadow-1-1-4 hover:shadow-1-1-4-inner cursor-pointer hover:opacity-100 transition`}>
+                  {showContent && elementId === room._id ? (
+                    <div className="flex justify-between w-full h-full">
+                    <div className="flex items-center justify-center hover:bg-green-200 w-1/2" onClick={() => handleShowInfo(room)}>
+                      <img src={popupBtn} className='w-4'/>
+                    </div>
+                    <div className="flex items-center justify-center hover:bg-red-200 w-1/2" onClick={() => handleDelete(room)}>
+                      <img src={deleteBtn} className='w-4'/>
+                    </div>              
+                  </div>
+                  ) : (
                   <div className='flex items-center gap-2'>
-
-                <div className="flex gap-1">
-                  <img src={calendarIcon} className='w-4 h-4 mt-0.5'></img>
-                  <p className={`pointer-events-none flex flex-wrap items-center`}>{`${date}.${month}`}</p>
-                </div>
-
-                {time && 
                   <div className="flex gap-1">
-                  <img src={clockIcon} className='w-4 h-4 mt-0.5'></img>
-                  <p> {time} </p>
+                    <img src={calendarIcon} className='w-4 h-4 mt-0.5'></img>
+                    <p className={`pointer-events-none flex flex-wrap items-center`}>{`${date}.${month}`}</p>
+                  </div>
+
+                  {time && 
+                    <div className="flex gap-1">
+                      <img src={clockIcon} className='w-4 h-4 mt-0.5'></img>
+                      <p> {time} </p>
+                    </div>
+                  }
+                  {<img className='w-4 h-4 ml-2' src={room.route === 'pickup' ? arrivals : departures}/>}
                 </div>
-                }
+                    )}
 
-
-                {<img className='w-4 h-4 ml-2' src={room.route === 'pickup' ? arrivals : departures}/>}
-
-              </div>
-                
                 </div>
             )
           })) : (null)}

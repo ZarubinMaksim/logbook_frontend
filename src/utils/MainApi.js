@@ -215,6 +215,15 @@ const deleteTaxi = (id) => {
   })
 }
 
+const updateTaxi = (id, route, room, date, pax, flight, phone) => {
+  return fetch(`${baseUrl}/taxi/${id}`, {
+    method: 'PATCH',
+    headers: headers,
+    body: JSON.stringify({ route, room, date, pax, flight, phone })
+  })
+  .then(getResponseData)
+}
+
 //---------***--------TAXI END---------***--------//
 
 
@@ -301,6 +310,7 @@ const MainApi = {
   setTaxi,
   getTaxies,
   deleteTaxi,
+  updateTaxi,
   setUmbrella,
   getUmbrellas,
   deleteUmbrella,
