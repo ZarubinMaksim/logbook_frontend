@@ -256,6 +256,15 @@ const deleteUmbrella = (id) => {
   })
 }
 
+const updateUmbrella = (id, room, umbrella) => {
+  return fetch(`${baseUrl}/umbrella/${id}`, {
+    method: 'PATCH',
+    headers: headers,
+    body: JSON.stringify({ room, umbrella })
+  })
+  .then(getResponseData)
+}
+
 //---------***--------UMBRELLA END---------***--------//
 
 
@@ -314,6 +323,7 @@ const MainApi = {
   setUmbrella,
   getUmbrellas,
   deleteUmbrella,
+  updateUmbrella,
   setNote,
   getNote,
   updateNote,

@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import Button from "./logbooks_components/Button"
 import deleteBtn from '../../images/delete.png'
+import popupBtn from '../../images/popup.png'
 import homeIcon from '../../images/home.png'
 import umbrellaIcon from '../../images/umbrella-blue.png'
 import UndoButton from "./logbooks_components/UndoButton"
 import MainApi from "../../utils/MainApi"
 
-function Umbrella({ dataRef, valueRef, isDeleted, handleUnDo, undoImg}) {
+function Umbrella({ dataRef, valueRef, isDeleted, handleUnDo, title, undoImg, setPopupTitle, setIsPopupOpened, setPopupData, isUpdatedFromPopup}) {
     const [content, setContent] = useState(false)
     const [idE, setIde] = useState(null)
 
@@ -61,6 +62,16 @@ function Umbrella({ dataRef, valueRef, isDeleted, handleUnDo, undoImg}) {
 
 //---------------------
 
+const handleShowInfo = (rd) => {  
+  setIsPopupOpened(true)
+  setPopupData(rd)
+  setPopupTitle(title)
+}
+
+useEffect(() => {
+  updateUmbrellas()
+}, [isUpdatedFromPopup])
+
     const mouse = (id) => {
       setContent(true)
       setIde(id)
@@ -78,8 +89,19 @@ function Umbrella({ dataRef, valueRef, isDeleted, handleUnDo, undoImg}) {
       <div className="flex flex-wrap justify-center items-center gap-2 p-2">
         {umbrellasList ? (umbrellasList.map((room) => {
             return (
-                <div onClick={() => handleDelete(room)} onMouseEnter={() => mouse(room.room)} onMouseLeave={mouse2} id={room.room} className="w-32 h-7 flex items-center justify-center px-2 rounded bg-blue opacity-70 shadow-1-1-4 hover:shadow-1-1-4-inner hover:bg-red-200 cursor-pointer hover:opacity-100 transition">
-                  {content && idE === room.room ? (<img src={deleteBtn} className='w-4'/>) : 
+                <div onMouseEnter={() => mouse(room._id)} onMouseLeave={mouse2} id={room.room} className="w-32 h-7 flex items-center justify-center rounded bg-blue opacity-70 shadow-1-1-4 hover:shadow-1-1-4-inner cursor-pointer hover:opacity-100 transition">
+                  {content && idE === room._id ? (
+                  
+                  <div className="flex justify-between w-full h-full">
+                  <div className="flex items-center justify-center hover:bg-green-200 w-1/2 transition" onClick={() => handleShowInfo(room)}>
+                    <img src={popupBtn} className='w-4'/>
+                  </div>
+                  <div className="flex items-center justify-center hover:bg-red-200 w-1/2" onClick={() => handleDelete(room)}>
+                    <img src={deleteBtn} className='w-4'/>
+                  </div>              
+                </div>
+                  
+                  ) : 
                   (
                   <div className="flex gap-2">
 
@@ -89,7 +111,7 @@ function Umbrella({ dataRef, valueRef, isDeleted, handleUnDo, undoImg}) {
                     </div>
                     <div className="flex gap-1"> 
                       <img src={umbrellaIcon} className='w-4 h-4 mt-0.5'></img>
-                      <p>{room.umbrellas}</p>  
+                      <p>{room.umbrella}</p>  
                     </div>
 
                   </div>

@@ -167,13 +167,13 @@ const mouseHover = (id) => {
                 <div onMouseEnter={() => mouseHover(room._id)} onMouseLeave={() => setShowContent(false)} id={room.room} className={` w-48 h-8 flex items-center justify-center rounded bg-blue opacity-70 shadow-1-1-4 hover:shadow-1-1-4-inner cursor-pointer hover:opacity-100 transition`}>
                   {showContent && elementId === room._id ? (
                     <div className="flex justify-between w-full h-full">
-                    <div className="flex items-center justify-center hover:bg-green-200 w-1/2" onClick={() => handleShowInfo(room)}>
-                      <img src={popupBtn} className='w-4'/>
+                      <div className="flex items-center justify-center hover:bg-green-200 w-1/2" onClick={() => handleShowInfo(room)}>
+                        <img src={popupBtn} className='w-4'/>
+                      </div>
+                      <div className="flex items-center justify-center hover:bg-red-200 w-1/2" onClick={() => handleDelete(room)}>
+                        <img src={deleteBtn} className='w-4'/>
+                      </div>              
                     </div>
-                    <div className="flex items-center justify-center hover:bg-red-200 w-1/2" onClick={() => handleDelete(room)}>
-                      <img src={deleteBtn} className='w-4'/>
-                    </div>              
-                  </div>
                   ) : (
                   <div className='flex items-center gap-2'>
                   <div className="flex gap-1">

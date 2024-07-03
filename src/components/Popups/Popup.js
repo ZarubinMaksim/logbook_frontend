@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import PopupAlert from "./PopupAlert";
 import MainApi from "../../utils/MainApi";
 import PopupAlarm from "./PopupAlarm";
+import PopupUmbrella from "./PopupUmbrella";
 
 function Popup({isPopupOpened, popupTitle, setIsPopupOpened, popupData, setDeletedFromPopupData, isDeletedFromPopup, setIsDeletedFromPopup, isUpdatedFromPopup, setIsUpdatedFromPopup}) {
   const popups = {
@@ -16,7 +17,7 @@ function Popup({isPopupOpened, popupTitle, setIsPopupOpened, popupData, setDelet
     contacts: PopupContact,
     alert: PopupAlert,
     alarm: PopupAlarm,
-    
+    umbrella: PopupUmbrella 
   }
   const CurrentPopup = popups[popupTitle]
   const [isVisible, setIsVisible] = useState('opacity-0')
