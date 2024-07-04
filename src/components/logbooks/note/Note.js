@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import MainApi from "../../utils/MainApi"
+import MainApi from "../../../utils/MainApi"
 
 function Note() {
 

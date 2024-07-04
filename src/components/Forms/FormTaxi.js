@@ -1,5 +1,4 @@
 //checked 19.06
-import { useState } from "react"
 
 function FormTaxi({ onChange, inputClass }) {
 

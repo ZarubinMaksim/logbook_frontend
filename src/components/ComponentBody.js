@@ -6,11 +6,13 @@ import MainApi from "../utils/MainApi"
 // isDeletedFromPopup={isDeletedFromPopup}
 
 function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, setPopupData, deletedFromPopupData, isDeletedFromPopup, isUpdatedFromPopup}) {
-  const DynamicComponent = lazy(() => import(`./logbooks/${title.charAt(0).toUpperCase()}${title.slice(1)}.js`))
+  const DynamicComponent = lazy(() => import(`./logbooks/${title}/${title.charAt(0).toUpperCase()}${title.slice(1)}.js`))
   const [room, setRoom] = useState()
   const [roomsList, setRoomsList] = useState(JSON.parse(localStorage.getItem(`${title}`)));
   const savedData = JSON.parse(localStorage.getItem(`${title}`))
   const [isDeleted, setIsDeleted] = useState(false)
+
+
   // const [isDeletedFromPopup, setIsDeletedFromPopup] = useState(false)
   const dataRef = useRef()
   const valueRef = useRef()

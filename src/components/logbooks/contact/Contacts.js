@@ -1,10 +1,10 @@
 import { constants } from "buffer"
 import { useEffect, useState } from "react"
-import mail from '../../images/mail.png'
-import MainApi from "../../utils/MainApi"
-import Form from "../Forms/Form"
-import FormContacts from "../Forms/FormContacts"
-import Button from "./logbooks_components/Button"
+import mail from '../../../images/mail.png'
+import MainApi from "../../../utils/MainApi"
+import Form from "../../Forms/Form"
+import FormContacts from "../../Forms/FormContacts"
+import Button from "../logbooks_components/Button"
 
 function Contacts({  savedData, setPopupTitle, setIsPopupOpened, setPopupData, title, isDeletedFromPopup, isUpdatedFromPopup}) {
   const [showForm, setShowForm] = useState(false)

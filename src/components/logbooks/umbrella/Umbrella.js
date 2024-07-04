@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react"
-import Button from "./logbooks_components/Button"
-import deleteBtn from '../../images/delete.png'
-import popupBtn from '../../images/popup.png'
-import homeIcon from '../../images/home.png'
-import umbrellaIcon from '../../images/umbrella-blue.png'
-import UndoButton from "./logbooks_components/UndoButton"
-import MainApi from "../../utils/MainApi"
+import Button from "../logbooks_components/Button"
+import deleteBtn from '../../../images/delete.png'
+import popupBtn from '../../../images/popup.png'
+import homeIcon from '../../../images/home.png'
+import umbrellaIcon from '../../../images/umbrella-blue.png'
+import UndoButton from "../logbooks_components/UndoButton"
+import MainApi from "../../../utils/MainApi"
 
 function Umbrella({ dataRef, valueRef, isDeleted, handleUnDo, title, undoImg, setPopupTitle, setIsPopupOpened, setPopupData, isUpdatedFromPopup}) {
     const [content, setContent] = useState(false)

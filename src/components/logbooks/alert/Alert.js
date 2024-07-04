@@ -1,14 +1,17 @@
-import Button from "./logbooks_components/Button"
-import deleteBtn from '../../images/delete.png'
-import popupBtn from '../../images/popup.png'
-import homeIcon from '../../images/home.png'
-import alertIcon from '../../images/alertIcon.png'
+import Button from "../logbooks_components/Button"
+import deleteBtn from '../../../images/delete.png'
+import popupBtn from '../../../images/popup.png'
+import homeIcon from '../../../images/home.png'
+import alertIcon from '../../../images/alertIcon.png'
 import { useEffect, useState } from "react"
-import UndoButton from "./logbooks_components/UndoButton"
-import MainApi from "../../utils/MainApi"
+import UndoButton from "../logbooks_components/UndoButton"
+import MainApi from "../../../utils/MainApi"
+import AlertContent from "./AlertContent"
+import AlertForm from "./AlertForm"
+import AlertList from "./AlertList"
 function Alert({title, isDeleted, handleUnDo, undoImg, setIsPopupOpened, setPopupData, setPopupTitle, isDeletedFromPopup, isUpdatedFromPopup}) {
-  const [content, setContent] = useState(false)
-  const [idE, setIde] = useState(null)
+  const [showOptions, setShowOptions] = useState(false)
+  const [elementId, setElementId] = useState(null)
 
   const [alert, setAlert] = useState()
   const [alertsList, setAlertsList] = useState([])
@@ -65,36 +68,35 @@ function Alert({title, isDeleted, handleUnDo, undoImg, setIsPopupOpened, setPopu
     updateAlerts()
   }, [isDeletedFromPopup])
 
-  const mouse = (id) => {
-    setContent(true)
-    setIde(id)
-  }
-  const mouse2 = () => {
-    setContent(false)
+  const mouseEnter = (currentElementId) => {
+    setShowOptions(true)
+    setElementId(currentElementId)
   }
 
-  const handleAlert = (data) => {
-    // if (isTooLong) {
+  const mouseLeave = () => {
+    setShowOptions(false)
+  }
+
+  const handleShowPopup = (data) => {
       setIsPopupOpened(true)
       setPopupData(data)
       setPopupTitle(title)
-    // } else {
-    //   handleDelete(data)
-    // }
   }
 
   return(
     <div className="flex flex-col w-full">
-      <form className='flex' onSubmit={handleSubmit}>
+      <AlertForm handleChange={handleChange} handleSubmit={handleSubmit}/>
+      <AlertList elementList={alertsList} mouseEnter={mouseEnter} mouseLeave={mouseLeave} showOptions={showOptions} elementId={elementId} handleDelete={handleDelete} handleShowPopup={handleShowPopup}/>
+      {/* <form className='flex' onSubmit={handleSubmit}>
         <input className="border text-xs border-border-grey w-1/3 px-1" name="room" placeholder="Room" onInput={handleChange} maxLength='6' required></input>
         <input className="border text-xs border-border-grey w-full px-1" name="alertText" placeholder="Enter Alert" onInput={handleChange} maxLength='' required></input>
         <Button type='submit' title='+' width='w-1/5'/>
-      </form>
+      </form> */}
 
-      <div className="flex flex-col justify-center items-center gap-2 p-2">
+      {/* <div className="flex flex-col justify-center items-center gap-2 p-2">
         {alertsList ? (alertsList.map((element) => {
 
-          const isTooLong = element.alertText.length > 12
+          // const isTooLong = element.alertText.length > 12
 
 
           return(
@@ -115,18 +117,19 @@ function Alert({title, isDeleted, handleUnDo, undoImg, setIsPopupOpened, setPopu
               </div>
             ) : 
             (
-              <div className='flex flex-col items-center gap-0.5' id={element.room}>
-                <div className="flex gap-2">
-                  <img src={homeIcon} className='w-4 h-4 mt-0.5'></img>
-                  <p className='' id={element.room}>{element.room}</p> 
-                </div>
+              <AlertContent element={element}/>
+              // <div className='flex flex-col items-center gap-0.5' id={element.room}>
+              //   <div className="flex gap-2">
+              //     <img src={homeIcon} className='w-4 h-4 mt-0.5'></img>
+              //     <p className='' id={element.room}>{element.room}</p> 
+              //   </div>
 
-                <div className="flex gap-2">
-                  <img src={alertIcon} className='w-4 h-4 mt-0.5'></img>
-                  <p>{isTooLong ? `${element.alertText.slice(0,14)}...` : element.alertText}</p>
-                </div>
+              //   <div className="flex gap-2">
+              //     <img src={alertIcon} className='w-4 h-4 mt-0.5'></img>
+              //     <p>{isTooLong ? `${element.alertText.slice(0,14)}...` : element.alertText}</p>
+              //   </div>
 
-              </div>
+              // </div>
 
             ) }
             
@@ -137,7 +140,7 @@ function Alert({title, isDeleted, handleUnDo, undoImg, setIsPopupOpened, setPopu
         <UndoButton 
           isDeleted={isDeleted}
           handleUnDo={handleUnDo}/>
-      </div>
+      </div> */}
     </div>
   )
 }
