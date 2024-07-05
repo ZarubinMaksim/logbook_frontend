@@ -6,10 +6,13 @@ import homeIcon from '../../../images/home.png'
 import umbrellaIcon from '../../../images/umbrella-blue.png'
 import UndoButton from "../logbooks_components/UndoButton"
 import MainApi from "../../../utils/MainApi"
+import UmbrellaContent from "./UmbrellaContent"
+import UmbrellaForm from "./UmbrellaForm"
+import UmbrellaList from "./UmbrellaList"
 
 function Umbrella({ dataRef, valueRef, isDeleted, handleUnDo, title, undoImg, setPopupTitle, setIsPopupOpened, setPopupData, isUpdatedFromPopup}) {
-    const [content, setContent] = useState(false)
-    const [idE, setIde] = useState(null)
+  const [showOptions, setShowOptions] = useState(false)
+  const [elementId, setElementId] = useState(null)
 
  //---------------------
  const [umbrella, setUmbrella] = useState()
@@ -62,7 +65,7 @@ function Umbrella({ dataRef, valueRef, isDeleted, handleUnDo, title, undoImg, se
 
 //---------------------
 
-const handleShowInfo = (rd) => {  
+const handleShowPopup = (rd) => {  
   setIsPopupOpened(true)
   setPopupData(rd)
   setPopupTitle(title)
@@ -72,21 +75,24 @@ useEffect(() => {
   updateUmbrellas()
 }, [isUpdatedFromPopup])
 
-    const mouse = (id) => {
-      setContent(true)
-      setIde(id)
-    }
-    const mouse2 = () => {
-      setContent(false)
-    }
+const mouseEnter = (currentElementId) => {
+  setShowOptions(true)
+  setElementId(currentElementId)
+}
+
+const mouseLeave = () => {
+  setShowOptions(false)
+}
   return(
     <div className="flex flex-col">
-      <form onSubmit={handleSubmit} className='flex'>
+      <UmbrellaForm handleChange={handleChange} handleSubmit={handleSubmit}/> 
+      <UmbrellaList elementList={umbrellasList} mouseEnter={mouseEnter} mouseLeave={mouseLeave} showOptions={showOptions} elementId={elementId} handleDelete={handleDelete} handleShowPopup={handleShowPopup}/>
+      {/* <form onSubmit={handleSubmit} className='flex'>
         <input ref={dataRef} className="border text-xs border-border-grey w-1/3 px-1" name="room" onInput={handleChange} placeholder="Room" maxLength='6' required></input>
         <input ref={valueRef} className="border text-xs border-border-grey w-1/3 px-1" name="umbrellas" onInput={handleChange} placeholder="Umbrellas" maxLength='2' required></input>
         <Button type='submit' title='+' width='w-1/3'/>
-      </form>
-      <div className="flex flex-wrap justify-center items-center gap-2 p-2">
+      </form> */}
+      {/* <div className="flex flex-wrap justify-center items-center gap-2 p-2">
         {umbrellasList ? (umbrellasList.map((room) => {
             return (
                 <div onMouseEnter={() => mouse(room._id)} onMouseLeave={mouse2} id={room.room} className="w-32 h-7 flex items-center justify-center rounded bg-blue opacity-70 shadow-1-1-4 hover:shadow-1-1-4-inner cursor-pointer hover:opacity-100 transition">
@@ -103,18 +109,19 @@ useEffect(() => {
                   
                   ) : 
                   (
-                  <div className="flex gap-2">
+                    <UmbrellaContent element={room}/>
+                  // <div className="flex gap-2">
 
-                    <div className="flex gap-1">
-                      <img src={homeIcon} className='w-4 h-4 mt-0.5'></img>
-                      <p className='' id={room.room}>{room.room}</p>
-                    </div>
-                    <div className="flex gap-1"> 
-                      <img src={umbrellaIcon} className='w-4 h-4 mt-0.5'></img>
-                      <p>{room.umbrella}</p>  
-                    </div>
+                  //   <div className="flex gap-1">
+                  //     <img src={homeIcon} className='w-4 h-4 mt-0.5'></img>
+                  //     <p className='' id={room.room}>{room.room}</p>
+                  //   </div>
+                  //   <div className="flex gap-1"> 
+                  //     <img src={umbrellaIcon} className='w-4 h-4 mt-0.5'></img>
+                  //     <p>{room.umbrella}</p>  
+                  //   </div>
 
-                  </div>
+                  // </div>
                   ) }
                   
                 </div>
@@ -122,7 +129,7 @@ useEffect(() => {
           })) : (null)}
           <UndoButton isDeleted={isDeleted}
           handleUnDo={handleUnDo} />
-      </div>
+      </div> */}
     </div>
   )
 }
