@@ -12,6 +12,10 @@ import UndoButton from '../logbooks_components/UndoButton'
 import calendarIcon from '../../../images/calendar.png'
 import clockIcon from '../../../images/clock.png'
 import MainApi from '../../../utils/MainApi'
+import TaxiContent from './TaxiContent'
+import ElementHoverOptions from '../logbooks_components/ElementHoverOptions'
+import TaxiList from './TaxiList'
+import TaxiForm from './TaxiForm'
 
 function Taxi({ dataRef, valueRef, valueRef_2, title, isDeleted, handleUnDo, undoImg, setPopupTitle, setIsPopupOpened, setPopupData, isDeletedFromPopup, isUpdatedFromPopup}) {
   const [showForm, setShowForm] = useState(false)
@@ -19,7 +23,7 @@ function Taxi({ dataRef, valueRef, valueRef_2, title, isDeleted, handleUnDo, und
   const [hiddenRoom, setHiddenRoom] = useState(null)
   const [showInfo, setShowInfo] = useState(false)
   const [showNestedInfo, setShowNestedInfo] = useState(false);
-  const [showContent, setShowContent] = useState(false)
+  const [showOptions, setShowOptions] = useState(false)
   const [elementId, setElementId] = useState(null)
   const handleShowForm = () => {
     setShowForm(!showForm)
@@ -83,9 +87,13 @@ function Taxi({ dataRef, valueRef, valueRef_2, title, isDeleted, handleUnDo, und
 
 //---------------------
 
-const mouseHover = (id) => {
-  setShowContent(true)
-  setElementId(id)
+const mouseEnter = (currentElementId) => {
+  setShowOptions(true)
+  setElementId(currentElementId)
+}
+
+const mouseLeave = () => {
+  setShowOptions(false)
 }
 
 
@@ -97,7 +105,7 @@ const mouseHover = (id) => {
   //   setIsTransferClicked(false)
   // }
 
-  const handleShowInfo = (rd) => {
+  const handleShowPopup = (rd) => {
     console.log('555', rd)
     // setShowNestedInfo(false)
     // setHiddenRoom(roomID)
@@ -126,7 +134,8 @@ const mouseHover = (id) => {
     <div className="flex flex-col w-full">
       <Button type='button' title='Add a ride' showForm={handleShowForm}/>
       {showForm ? (
-        <Form onSubmit={handleSubmit} onChange={handleChange} title={title}/>
+        <TaxiForm handleChange={handleChange} handleSubmit={handleSubmit}/>
+        // <Form onSubmit={handleSubmit} onChange={handleChange} title={title}/>
         // <form onSubmit={handleSubmit} className='flex flex-col gap-2 h-fit items-center justify-center py-2'>
         //   <div className='flex w-4/5 justify-around'>
         //     <label className='flex flex-col gap-1 cursor-pointer'>
@@ -156,50 +165,54 @@ const mouseHover = (id) => {
         //   <Button type='submit' title='Add' width='w-4/5'/>
         // </form>
       ) : (
-        <div className="flex flex-wrap justify-center items-center gap-2 p-2">
-        {taxiesList ? (taxiesList.map((room) => {
-          const dateTime = room.date.split('T')
-          const fullDate = dateTime[0].split('-')
-          const time = dateTime[1]
-          const [year, month, date] = fullDate
-            return (
-              // {route: 'transfer', room: '7898', flight: 'su778', time: '12:23', pax: '1'} 
-                <div onMouseEnter={() => mouseHover(room._id)} onMouseLeave={() => setShowContent(false)} id={room.room} className={` w-48 h-8 flex items-center justify-center rounded bg-blue opacity-70 shadow-1-1-4 hover:shadow-1-1-4-inner cursor-pointer hover:opacity-100 transition`}>
-                  {showContent && elementId === room._id ? (
-                    <div className="flex justify-between w-full h-full">
-                      <div className="flex items-center justify-center hover:bg-green-200 w-1/2" onClick={() => handleShowInfo(room)}>
-                        <img src={popupBtn} className='w-4'/>
-                      </div>
-                      <div className="flex items-center justify-center hover:bg-red-200 w-1/2" onClick={() => handleDelete(room)}>
-                        <img src={deleteBtn} className='w-4'/>
-                      </div>              
-                    </div>
-                  ) : (
-                  <div className='flex items-center gap-2'>
-                  <div className="flex gap-1">
-                    <img src={calendarIcon} className='w-4 h-4 mt-0.5'></img>
-                    <p className={`pointer-events-none flex flex-wrap items-center`}>{`${date}.${month}`}</p>
-                  </div>
+        <TaxiList elementList={taxiesList} mouseEnter={mouseEnter} mouseLeave={mouseLeave} showOptions={showOptions} elementId={elementId} handleDelete={handleDelete} handleShowPopup={handleShowPopup}/>
+      //   <div className="flex flex-wrap justify-center items-center gap-2 p-2">
+      //     {taxiesList ? (taxiesList.map((room) => {
+      //     const dateTime = room.date.split('T')
+      //     const fullDate = dateTime[0].split('-')
+      //     const time = dateTime[1]
+      //     const [year, month, date] = fullDate
+      //       return (
+      //         // {route: 'transfer', room: '7898', flight: 'su778', time: '12:23', pax: '1'} 
+      //           <div onMouseEnter={() => mouseHover(room._id)} onMouseLeave={() => setShowContent(false)} id={room.room} className={` w-48 h-8 flex items-center justify-center rounded bg-blue opacity-70 shadow-1-1-4 hover:shadow-1-1-4-inner cursor-pointer hover:opacity-100 transition`}>
+      //             {showContent && elementId === room._id ? (
+      //               <ElementHoverOptions handleShowPopup={handleShowPopup} handleDelete={handleDelete} element={room}/>
+                    
+      //               // <div className="flex justify-between w-full h-full">
+      //               //   <div className="flex items-center justify-center hover:bg-green-200 w-1/2" onClick={() => handleShowInfo(room)}>
+      //               //     <img src={popupBtn} className='w-4'/>
+      //               //   </div>
+      //               //   <div className="flex items-center justify-center hover:bg-red-200 w-1/2" onClick={() => handleDelete(room)}>
+      //               //     <img src={deleteBtn} className='w-4'/>
+      //               //   </div>              
+      //               // </div>
+      //             ) : (
+      //               <TaxiContent date={date} month={month} time={time} element={room}/>
+      //           //   <div className='flex items-center gap-2'>
+      //           //     <div className="flex gap-1">
+      //           //       <img src={calendarIcon} className='w-4 h-4 mt-0.5'></img>
+      //           //       <p className={`pointer-events-none flex flex-wrap items-center`}>{`${date}.${month}`}</p>
+      //           //     </div>
 
-                  {time && 
-                    <div className="flex gap-1">
-                      <img src={clockIcon} className='w-4 h-4 mt-0.5'></img>
-                      <p> {time} </p>
-                    </div>
-                  }
-                  {<img className='w-4 h-4 ml-2' src={room.route === 'pickup' ? arrivals : departures}/>}
-                </div>
-                    )}
+      //           //   {time && 
+      //           //     <div className="flex gap-1">
+      //           //       <img src={clockIcon} className='w-4 h-4 mt-0.5'></img>
+      //           //       <p> {time} </p>
+      //           //     </div>
+      //           //   }
+      //           //   {<img className='w-4 h-4 ml-2' src={room.route === 'pickup' ? arrivals : departures}/>}
+      //           // </div>
+      //               )}
 
-                </div>
-            )
-          })) : (null)}
-          <UndoButton 
-            isDeleted={isDeleted}
-            isDeletedFromPopup={isDeletedFromPopup}
-            handleUnDo={handleUnDo} />
+      //           </div>
+      //       )
+      //     })) : (null)}
+      //     <UndoButton 
+      //       isDeleted={isDeleted}
+      //       isDeletedFromPopup={isDeletedFromPopup}
+      //       handleUnDo={handleUnDo} />
           
-      </div>
+      // </div>
       )}
       
     </div>
