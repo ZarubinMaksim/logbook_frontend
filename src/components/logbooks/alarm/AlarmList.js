@@ -19,17 +19,20 @@ function AlarmList ({ elementList, mouseEnter, mouseLeave, showOptions, elementI
         <div 
           onMouseEnter={() => mouseEnter(element._id)} 
           onMouseLeave={mouseLeave} 
-          className={`w-22 h-22 flex items-center justify-center rounded ${isToday ? 'bg-red-200' : 'bg-blue' } opacity-70 shadow-1-1-4 hover:shadow-1-1-4-inner cursor-pointer hover:opacity-100 transition`}>
-        {showOptions && elementId === element._id ? 
-          (
-            <ElementHoverOptions element={element} handleShowPopup={handleShowPopup} handleDelete={handleDelete}/>
-        ) : 
-          (
-            <AlarmContent element={element} isToday={isToday} alarmTime={alarmTime}/>
-
-          ) }
-        
-      </div>
+          className={`w-22 h-22 flex items-center justify-center rounded ${isToday ? 'bg-red-200' : 'bg-blue' } shadow-1-1-4 hover:shadow-1-1-4-inner cursor-pointer hover:opacity-100 transition`}>
+          {showOptions && elementId === element._id ? 
+            <ElementHoverOptions 
+              element={element} 
+              handleShowPopup={handleShowPopup} 
+              handleDelete={handleDelete}
+            /> : 
+            <AlarmContent 
+              element={element} 
+              isToday={isToday} 
+              alarmTime={alarmTime}
+            />
+          }
+        </div>
       )
 
     })) : (null)}

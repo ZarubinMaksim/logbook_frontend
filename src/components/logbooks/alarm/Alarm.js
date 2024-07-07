@@ -7,9 +7,7 @@ function Alarm({
   setPopupData,
   setIsPopupOpened,
   setPopupTitle,
-  isDeleted, 
   isUpdatedFromPopup,
-  handleUnDo, 
   title,
 }) {
 

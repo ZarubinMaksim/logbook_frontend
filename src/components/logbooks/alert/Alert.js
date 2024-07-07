@@ -1,15 +1,9 @@
-import Button from "../logbooks_components/Button"
-import deleteBtn from '../../../images/delete.png'
-import popupBtn from '../../../images/popup.png'
-import homeIcon from '../../../images/home.png'
-import alertIcon from '../../../images/alertIcon.png'
 import { useEffect, useState } from "react"
-import UndoButton from "../logbooks_components/UndoButton"
 import MainApi from "../../../utils/MainApi"
-import AlertContent from "./AlertContent"
 import AlertForm from "./AlertForm"
 import AlertList from "./AlertList"
-function Alert({title, isDeleted, handleUnDo, undoImg, setIsPopupOpened, setPopupData, setPopupTitle, isDeletedFromPopup, isUpdatedFromPopup}) {
+
+function Alert({title, setIsPopupOpened, setPopupData, setPopupTitle, isDeletedFromPopup, isUpdatedFromPopup}) {
   const [showOptions, setShowOptions] = useState(false)
   const [elementId, setElementId] = useState(null)
 

@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react"
 import MainApi from "../../utils/MainApi"
+import homeIcon from '../../images/home.png'
+import idIcon from '../../images/id.png'
+import vatIcon from '../../images/vat.png'
+import detaisIcon from '../../images/details.png'
+import emailIcon from '../../images/mail.png'
+import InfoBlock from "./InfoBlock"
+
 
 function PopupInvoice({data, isDeleteClicked, isUpdatedFromPopup, setIsDeletedFromPopup, isDeletedFromPopup, handleClosePopup, setIsUpdateClicked, isUpdateClicked, setIsUpdatedFromPopup}) {
   
@@ -41,7 +48,7 @@ function PopupInvoice({data, isDeleteClicked, isUpdatedFromPopup, setIsDeletedFr
   }
 
  return (
-  <div className="font-mainfont text-lg">
+  <div className="font-mainfont text-lg overflow-scroll">
     {isUpdateClicked ? (
           <form className='flex flex-col' onSubmit={handleSaveUpdate}>
             <label for='room' className="text-black text-sm mt-2">New room</label>
@@ -57,13 +64,43 @@ function PopupInvoice({data, isDeleteClicked, isUpdatedFromPopup, setIsDeletedFr
             <button type='submit'>Save</button>
           </form>
     ) : (
-        <>
-          <p>Room: {isUpdateSaved ? invoice.room : data.room }</p>
-          <p>Company: {isUpdateSaved ? invoice.company : data.company }</p>
-          <p>VAT: {isUpdateSaved ? invoice.vat : data.vat }</p>
-          <p>Details: {isUpdateSaved ? invoice.details : data.details }</p>
-          <p>Email: {isUpdateSaved ? invoice.email : data.email }</p>
-        </>
+      <div className="flex flex-col gap-2 max-w-96">
+        <div className="flex gap-2">
+          <InfoBlock 
+            icon={homeIcon} 
+            title={'Room'} 
+            isUpdateSaved={isUpdateSaved} 
+            savedValue={[invoice.room]} 
+            uploadedValue={[data.room]}/>
+          <InfoBlock 
+            icon={idIcon} 
+            title={'Company'} 
+            isUpdateSaved={isUpdateSaved} 
+            savedValue={[invoice.company]} 
+            uploadedValue={[data.company]}/>
+        </div>
+
+        <div className="flex gap-2" > 
+        <InfoBlock 
+          icon={vatIcon} 
+          title={'VAT'} 
+          isUpdateSaved={isUpdateSaved} 
+          savedValue={[invoice.vat]} 
+          uploadedValue={[data.vat]}/>
+        <InfoBlock 
+          icon={emailIcon} 
+          title={'Email'} 
+          isUpdateSaved={isUpdateSaved} 
+          savedValue={[invoice.email]} 
+          uploadedValue={[data.email]}/>
+      </div>
+        <InfoBlock 
+          icon={detaisIcon} 
+          title={'Details'} 
+          isUpdateSaved={isUpdateSaved} 
+          savedValue={[invoice.details]} 
+          uploadedValue={[data.details]}/>
+      </div>
     )}
 
    </div>

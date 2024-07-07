@@ -17,7 +17,7 @@ function AlertList ({ elementList, mouseEnter, mouseLeave, showOptions, elementI
               onMouseEnter={() => mouseEnter(element._id)} 
               onMouseLeave={mouseLeave} 
               id={element.room} 
-              className="w-full min-h-12 h-14 flex items-center justify-center rounded bg-blue opacity-70 shadow-1-1-4 hover:shadow-1-1-4-inner cursor-pointer hover:opacity-100 transition">
+              className="w-full min-h-12 h-14 flex items-center justify-center rounded bg-blue  shadow-1-1-4 hover:shadow-1-1-4-inner cursor-pointer hover:opacity-100 transition">
             {showOptions && elementId === element._id ? 
             (
               <ElementHoverOptions handleShowPopup={handleShowPopup} handleDelete={handleDelete} element={element}/>

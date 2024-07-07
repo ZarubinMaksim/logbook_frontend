@@ -93,8 +93,8 @@ function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, set
   }
 
   return (
-    <div className='border border-border-grey bg-white h-full flex flex-col'>
-      <div className='flex items-center justify-between bg-dark-blue p-1'>
+    <div className='border border-border-grey bg-white h-full flex flex-col rounded-md'>
+      <div className='flex items-center justify-between bg-dark-blue p-1 rounded-t-md'>
         <h2 className="capitalize font-mainfont text-header-focus">{title}</h2>
         <div className="relative inline-block cursor-help" onMouseEnter={() => setShowTooltip(true)} onMouseLeave={() => setShowTooltip(false)}>
           <img className="w-4 h-4 opacity-60 hover:opacity-100 transition" src={help} alt='test' />

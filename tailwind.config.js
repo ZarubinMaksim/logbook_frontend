@@ -48,6 +48,10 @@ module.exports = {
         'header-active-focus': '#427F45',
         'header-active': '#82A385',
 
+        'dark': '#7e713b',
+        'light': '#d6d2c0',
+        'active': '#dcdcdc',
+
 
         'blue': '#ebf3ff',
         'blue-active': '#c2dcff', //header d9d3e5

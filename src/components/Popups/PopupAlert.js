@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react"
 import MainApi from "../../utils/MainApi"
+import homeIcon from '../../images/home.png'
+import alertIcon from '../../images/alertIcon.png'
+import InfoBlock from "./InfoBlock"
 
 function PopupAlert({data, isDeleteClicked, setIsDeletedFromPopup, isDeletedFromPopup, handleClosePopup, setIsUpdateClicked, isUpdateClicked, setIsUpdatedFromPopup, isUpdatedFromPopup}) {
     const [alert, setAlert] = useState({
@@ -46,16 +49,26 @@ function PopupAlert({data, isDeleteClicked, setIsDeletedFromPopup, isDeletedFrom
     {isUpdateClicked ? (
       <form className='flex flex-col' onSubmit={handleSaveUpdate}>
         <label for='room' className="text-black text-sm mt-2">New room</label>
-        <input value={alert.room} onChange={handleChange} className="border text-xs border-border-grey w-1/3 h-7 px-1" name="room" placeholder="Room" onInput={handleChange} maxLength='6' required></input>
+        <input value={alert.room} onChange={handleChange} className="border text-xs border-border-grey w-full h-7 px-1" name="room" placeholder="Room" onInput={handleChange} maxLength='6' required></input>
         <label for='alertText' className="text-black text-sm mt-2">New Alert</label>
-        <input value={alert.alertText} onChange={handleChange} className="border text-xs border-border-grey w-full h-7 px-1" name="alertText" placeholder="Enter Alert" onInput={handleChange} maxLength='' required></input>
-        <button type='submit'>Save</button>
+        <input value={alert.alertText} onChange={handleChange} className="border text-xs border-border-grey w-full h-7 px-1 mb-4" name="alertText" placeholder="Enter Alert" onInput={handleChange} maxLength='' required></input>
+        <button className="border border-dark-blue w-1/2 self-center" type="submit">Save</button>
       </form>
     ) : (
-      <>
-      <p className="capitalize">{isUpdateSaved ? alert.room : data.room}</p>
-      <p className="capitalize">{isUpdateSaved ? alert.alertText : data.alertText}</p>
-      </>
+      <div className="flex gap-2">
+        <InfoBlock 
+          icon={homeIcon} 
+          title={'Room'} 
+          isUpdateSaved={isUpdateSaved} 
+          savedValue={[alert.room]} 
+          uploadedValue={[data.room]}/>
+        <InfoBlock 
+          icon={alertIcon} 
+          title={'Alert'} 
+          isUpdateSaved={isUpdateSaved} 
+          savedValue={[alert.alertText]} 
+          uploadedValue={[data.alertText]}/>
+      </div>
     )}
 
    </div>

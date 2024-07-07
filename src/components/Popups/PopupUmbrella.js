@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react"
 import MainApi from "../../utils/MainApi"
+import homeIcon from '../../images/home.png'
+import umbrellaIcon from '../../images/umbrella-blue.png'
+import InfoBlock from "./InfoBlock"
 
 function PopupUmbrella({data, isDeleteClicked, setIsDeletedFromPopup, isDeletedFromPopup, handleClosePopup, isUpdateClicked, setIsUpdatedFromPopup, setIsUpdateClicked, isUpdatedFromPopup}) {
 
@@ -49,10 +52,10 @@ function PopupUmbrella({data, isDeleteClicked, setIsDeletedFromPopup, isDeletedF
         <button type='submit'>Save</button>
       </form>
       ) : (
-        <>
-        <p>Room: {isUpdateSaved ? umbrella.room : data.room}</p>  
-        <p>Umbrellas: {isUpdateSaved ? umbrella.umbrellas : data.umbrella}</p>
-        </>
+      <div className="flex gap-2">
+        <InfoBlock icon={homeIcon} title={'Room'} isUpdateSaved={isUpdateSaved} savedValue={[umbrella.room]} uploadedValue={[data.room]}/>
+        <InfoBlock icon={umbrellaIcon} title={'Umbrellas'} isUpdateSaved={isUpdateSaved} savedValue={[umbrella.umbrellas]} uploadedValue={[data.umbrella]}/>
+      </div>
       )}
 
     </div>

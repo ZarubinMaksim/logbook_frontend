@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react"
 import MainApi from "../../utils/MainApi"
+import phoneIcon from '../../images/phone.png'
+import departmentIcon from '../../images/department.png'
+import idIcon from '../../images/id.png'
+import emailIco from '../../images/mail.png'
+import InfoBlock from "./InfoBlock"
 
 function PopupContact({data, isDeleteClicked, isUpdatedFromPopup, setIsUpdatedFromPopup, setIsDeletedFromPopup, isDeletedFromPopup, handleClosePopup, isUpdateClicked, setIsUpdateClicked}) {
 
@@ -14,6 +19,13 @@ function PopupContact({data, isDeleteClicked, isUpdatedFromPopup, setIsUpdatedFr
   })
 
   const [isUpdateSaved, setIsUpdateSaved] = useState(false)
+
+  const savedContactName = [contact.firstname, contact.middlename, contact.name ]
+  const uploadedContactName = [data.firstname, data.middlename, data.name ]
+
+  const savedContacts = [contact.phone, contact.mobile, contact.email]
+  const uploadedContacts =[data.phone, data.mobile, data.email]
+
 
   useEffect(() => {
     if (isDeleteClicked) {
@@ -42,7 +54,7 @@ function PopupContact({data, isDeleteClicked, isUpdatedFromPopup, setIsUpdatedFr
       setIsUpdateClicked(!isUpdateClicked)
     })
   }
-
+  
  return (
   <div className="font-mainfont text-lg">
     {isUpdateClicked ? (
@@ -64,15 +76,29 @@ function PopupContact({data, isDeleteClicked, isUpdatedFromPopup, setIsUpdatedFr
         <button type='submit'>Save</button>
       </form>
       ) : (
-      <>
-      <p className="capitalize">Dep: {isUpdateSaved ? contact.department : data.department}</p>
-      <p className="capitalize">First name: {isUpdateSaved ? contact.firstname : data.firstname}</p>
-      <p className="capitalize">Name: {isUpdateSaved ? contact.name : data.name}</p>
-      <p className="capitalize">Middle name: {isUpdateSaved ? contact.middlename : data.middlename}</p>
-      <p className="capitalize">Phone: {isUpdateSaved ? contact.phone : data.phone}</p>
-      <p className="capitalize">Mobile: {isUpdateSaved ? contact.mobile : data.mobile}</p>
-      <p className="capitalize">E-mail: {isUpdateSaved ? contact.email : data.email}</p>
-      </>
+        <div className="flex flex-col gap-2 max-w-96">
+
+        <div className="flex gap-2">
+          <InfoBlock 
+            icon={departmentIcon} 
+            title={'Department'} 
+            isUpdateSaved={isUpdateSaved} 
+            savedValue={[contact.department]} 
+            uploadedValue={[data.department]}/>
+          <InfoBlock 
+            icon={idIcon} 
+            title={'Name'} 
+            isUpdateSaved={isUpdateSaved} 
+            savedValue={savedContactName} 
+            uploadedValue={uploadedContactName}/>
+        </div>
+          <InfoBlock 
+            icon={phoneIcon} 
+            title={'Contacts'} 
+            isUpdateSaved={isUpdateSaved} 
+            savedValue={savedContacts} 
+            uploadedValue={uploadedContacts}/>
+        </div>
     )}
 
 

@@ -107,11 +107,11 @@ function Popup({isPopupOpened, popupTitle, setIsPopupOpened, popupData, setDelet
   return (
     <div className={`${isVisible} w-screen h-screen absolute top-0 flex items-center justify-center transition-all duration-300`}>
       <div className="absolute inset-0 bg-black opacity-60"></div> 
-      <div className="w-1/3 h-fit flex flex-col bg-blue rounded-xl shadow-popup relative p-5">
+      <div className="w-fit h-fit max-w-96 max-h-96 flex flex-col bg-blue rounded shadow-popup relative p-5 gap-2">
         <div className="flex gap-2 self-end">
-          <img className={`w-5 h-5 cursor-pointer opacity-40 hover:opacity-100 transition-opacity`} src={editButton} onClick={handleUpdate}/>
-          <img className={`w-5 h-5 cursor-pointer opacity-40 hover:opacity-100 transition-opacity`} src={deleteButton} onClick={handleDelete}/>
-          <img className={`w-5 h-5 cursor-pointer opacity-40 hover:opacity-100 transition-opacity`} src={closeButton} onClick={handleClosePopup}/>
+          <img className={`w-4 h-4 cursor-pointer opacity-40 hover:opacity-100 transition-opacity`} src={editButton} onClick={handleUpdate}/>
+          <img className={`w-4 h-4 cursor-pointer opacity-40 hover:opacity-100 transition-opacity`} src={deleteButton} onClick={handleDelete}/>
+          <img className={`w-4 h-4 cursor-pointer opacity-40 hover:opacity-100 transition-opacity`} src={closeButton} onClick={handleClosePopup}/>
         </div>
         <CurrentPopup 
           data={popupData} 

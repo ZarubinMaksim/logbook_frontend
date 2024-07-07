@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react"
 import MainApi from "../../utils/MainApi"
+import routeIcon from '../../images/location.png'
+import homeIcon from '../../images/home.png'
+import calendarIcon from '../../images/calendar.png'
+import clockIcon from '../../images/clock.png'
+import flightIcon from '../../images/airplane.png'
+import paxIcon from '../../images/team.png'
+import phoneIcon from '../../images/phone.png'
+import InfoBlock from "./InfoBlock"
+
 
 function PopupTaxi({data, isDeleteClicked, setIsDeletedFromPopup, isDeletedFromPopup, handleClosePopup, isUpdateClicked, setIsUpdatedFromPopup, setIsUpdateClicked, isUpdatedFromPopup}) {
 
@@ -72,15 +81,25 @@ function PopupTaxi({data, isDeleteClicked, setIsDeletedFromPopup, isDeletedFromP
         <button type='submit'>Save</button>
       </form>
       ) : (
-        <>
-        <p>Route: {isUpdateSaved ? taxi.route : data.route}</p>
-        <p>Date: {fullDate.join('-')}</p>
-        <p>Time: {time}</p>
-        <p>Room: {isUpdateSaved ? taxi.room : data.room}</p>  
-        <p>Flight: {isUpdateSaved ? taxi.flight : data.flight}</p>
-        <p>Pax: {isUpdateSaved ? taxi.pax : data.pax}</p>  
-        <p>Phone: {isUpdateSaved ? taxi.phone : data.phone}</p>
-        </>
+        <div className="flex flex-col gap-2">
+
+          <div className="flex gap-2">
+            <InfoBlock 
+              icon={routeIcon} 
+              title={'Route'} isUpdateSaved={isUpdateSaved} savedValue={[taxi.route]} uploadedValue={[data.route]}/>
+            <InfoBlock icon={calendarIcon} title={'Date'} isUpdateSaved={isUpdateSaved} savedValue={[fullDate.join('-')]} uploadedValue={[time]}/>
+          </div>
+          <div className="flex gap-2">
+            <InfoBlock icon={homeIcon} title={'Room'} isUpdateSaved={isUpdateSaved} savedValue={[taxi.room]} uploadedValue={[data.room]}/>
+            <InfoBlock icon={flightIcon} title={'Flight'} isUpdateSaved={isUpdateSaved} savedValue={[taxi.flight]} uploadedValue={[data.flight]}/>
+          </div>
+
+          <div className="flex gap-2">
+          <InfoBlock icon={paxIcon} title={'Pax'} isUpdateSaved={isUpdateSaved} savedValue={[taxi.pax]} uploadedValue={[data.pax]}/>
+            <InfoBlock icon={phoneIcon} title={'Phone'} isUpdateSaved={isUpdateSaved} savedValue={[taxi.phone]} uploadedValue={[data.phone]}/>
+          </div>
+        </div>
+
       )}
 
     </div>
