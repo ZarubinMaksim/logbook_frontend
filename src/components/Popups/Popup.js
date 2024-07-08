@@ -10,7 +10,7 @@ import MainApi from "../../utils/MainApi";
 import PopupAlarm from "./PopupAlarm";
 import PopupUmbrella from "./PopupUmbrella";
 
-function Popup({isPopupOpened, popupTitle, setIsPopupOpened, popupData, setDeletedFromPopupData, isDeletedFromPopup, setIsDeletedFromPopup, isUpdatedFromPopup, setIsUpdatedFromPopup}) {
+function Popup({isPopupOpened, setIsBlur, popupTitle, setIsPopupOpened, popupData, setDeletedFromPopupData, isDeletedFromPopup, setIsDeletedFromPopup, isUpdatedFromPopup, setIsUpdatedFromPopup}) {
   const popups = {
     taxi: PopupTaxi,
     invoice: PopupInvoice,
@@ -29,6 +29,7 @@ function Popup({isPopupOpened, popupTitle, setIsPopupOpened, popupData, setDelet
     if (isVisible === 'opacity-100') {
       setIsVisible('opacity-0')
     } 
+    setIsBlur(false)
     setTimeout(() => {
       setIsPopupOpened(false)
     }, 200)  
@@ -107,7 +108,7 @@ function Popup({isPopupOpened, popupTitle, setIsPopupOpened, popupData, setDelet
   return (
     <div className={`${isVisible} w-screen h-screen absolute top-0 flex items-center justify-center transition-all duration-300`}>
       <div className="absolute inset-0 bg-black opacity-60"></div> 
-      <div className="w-fit h-fit max-w-96 max-h-96 flex flex-col bg-blue rounded shadow-popup relative p-5 gap-2">
+      <div className="w-fit h-fit  max-w-96 max-h-96 flex flex-col bg-blue rounded shadow-popup relative p-5 gap-2">
         <div className="flex gap-2 self-end">
           <img className={`w-4 h-4 cursor-pointer opacity-40 hover:opacity-100 transition-opacity`} src={editButton} onClick={handleUpdate}/>
           <img className={`w-4 h-4 cursor-pointer opacity-40 hover:opacity-100 transition-opacity`} src={deleteButton} onClick={handleDelete}/>

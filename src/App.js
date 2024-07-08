@@ -25,6 +25,7 @@ function App() {
   const [draggable, setIsDraggable] = useState(false)
   
   const [isPopupOpened, setIsPopupOpened] = useState(false)
+  const [isBlur, setIsBlur] = useState(false)
   const [popupTitle, setPopupTitle] = useState('')
     const [popupData, setPopupData] = useState(null)
   const [isDeletedFromPopup, setIsDeletedFromPopup] = useState(false)
@@ -154,7 +155,7 @@ function App() {
           isLocked={setIsDraggable}
         />
         <ResponsiveGridLayout
-        className=""
+        className={isBlur && 'blur-none'}
         layouts={layouts}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         cols={{ lg: 50, md: 40, sm: 30, xs: 20, xxs: 1 }}
@@ -173,6 +174,7 @@ function App() {
               isUnlocked={draggable}
               setPopupTitle={setPopupTitle}   
               setIsPopupOpened={setIsPopupOpened}
+              setIsBlur={setIsBlur}
               setPopupData={setPopupData}
               deletedFromPopupData={deletedFromPopupData}
               isDeletedFromPopup={isDeletedFromPopup}
@@ -187,6 +189,7 @@ function App() {
             isUnlocked={draggable}
             setPopupTitle={setPopupTitle}   
             setIsPopupOpened={setIsPopupOpened}
+            setIsBlur={setIsBlur}
             setPopupData={setPopupData}     
             deletedFromPopupData={deletedFromPopupData}
             isDeletedFromPopup={isDeletedFromPopup}
@@ -203,6 +206,7 @@ function App() {
       {isPopupOpened && <Popup 
       popupTitle={popupTitle}
       setIsPopupOpened={setIsPopupOpened}
+      setIsBlur={setIsBlur}
       popupData={popupData}
       setDeletedFromPopupData={setDeletedFromPopupData}
       isDeletedFromPopup={isDeletedFromPopup}

@@ -6,7 +6,7 @@ function Button({ showForm, title, type, width }) {
       type={type} 
       onClick={showForm} 
       className={`border border-border-grey cursor-pointer hover:bg-blue transition text-s ${width ? width : 'w-full'}`}>
-        {title}
+      {title}
     </button>
   )
 }

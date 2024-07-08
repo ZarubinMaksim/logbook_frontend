@@ -1,33 +1,20 @@
-import { useEffect, useState } from "react"
-import MainApi from "../../../utils/MainApi"
-import AlarmForm from "./AlarmForm"
-import AlarmList from "./AlarmList"
+import { useEffect, useState } from "react";
+import MainApi from "../../../utils/MainApi";
+import AlarmForm from "./AlarmForm";
+import AlarmList from "./AlarmList";
 
 function Alarm({ 
-  setPopupData,
-  setIsPopupOpened,
-  setPopupTitle,
   isUpdatedFromPopup,
-  title,
-}) {
+  isDeletedFromPopup,
+  handleShowPopup,
+  handleChange
+  }) {
 
-  const [alarm, setAlarm] = useState()
-  const [alarmsList, setAlarmsList] = useState()
-  const [showOptions, setShowOptions] = useState(false)
-  const [elementId, setElementId] = useState(null)
-
-  const currentTime = new Date()
-
-  // ------------*** START Mouse enter handlers ***------------
-  const mouseEnter = (currentElementId) => {
-    setShowOptions(true)
-    setElementId(currentElementId)
-  }
-
-  const mouseLeave = () => {
-    setShowOptions(false)
-  }
-  // ------------*** END Mouse enter handlers ***------------
+  const [alarm, setAlarm] = useState();
+  const [alarmsList, setAlarmsList] = useState();
+  const [showOptions, setShowOptions] = useState(false);
+  const [elementId, setElementId] = useState(null);
+  const currentTime = new Date();
 
   // ----------NEED to CHECK AND REWIEW----------
   useEffect(() => {
@@ -54,22 +41,26 @@ function Alarm({
 // ___________________________________NEED TO CHECK UP CODE
 
 
-
 // ------------*** START Component Content updaters ***------------
   // Update on initialization
   useEffect(() => {
-    const cachedAlarms = JSON.parse(localStorage.getItem('alarms'))
+    const cachedAlarms = JSON.parse(localStorage.getItem('alarms'));
     if (cachedAlarms) {
-      setAlarmsList(cachedAlarms)
-    }
+      setAlarmsList(cachedAlarms);
+    };
 
-    updateAlarms()
-  }, [])
+    updateAlarms();
+  }, []);
 
-  // update after popup options
+  // update component after updated from popup
+  useEffect(() => {
+    updateAlarms();
+  }, [isUpdatedFromPopup]);
+
+  // update component after deleted from popup
   useEffect(() => {
     updateAlarms()
-  }, [isUpdatedFromPopup])
+  }, [isDeletedFromPopup])
 
 // ------------*** END Component Content updaters ***------------
 
@@ -81,56 +72,55 @@ function Alarm({
   const updateAlarms = () => {
     MainApi.getAlarms()
     .then((alarms) => {
-      setAlarmsList(alarms.data)
-      localStorage.setItem('alarms', JSON.stringify(alarms.data))
+      setAlarmsList(alarms.data);
+      localStorage.setItem('alarms', JSON.stringify(alarms.data));
     })
     .catch((err) => {
-      console.log('Error fetching alarms:', err)
+      console.log('Error fetching alarms:', err);
     })
-  }
+  };
 
   // delete API
   const handleDelete = (element) => {
-    MainApi.deleteAlarm(element._id)
-    const updatedAlarmsList = alarmsList.filter((elem) => elem._id !== element._id)
-    setAlarmsList(updatedAlarmsList)
-    localStorage.setItem('alarms', JSON.stringify(updatedAlarmsList))
-  }
+    MainApi.deleteAlarm(element._id);
+    const updatedAlarmsList = alarmsList.filter((elem) => elem._id !== element._id);
+    setAlarmsList(updatedAlarmsList);
+    localStorage.setItem('alarms', JSON.stringify(updatedAlarmsList));
+  };
 
   // create API
   const handleSubmit = (e) => {
-    e.preventDefault()
-    const {room, date} = alarm
+    e.preventDefault();
+    const {room, date} = alarm;
     MainApi.setAlarm(room, date)
     .then((response) => {
-      const newAlarm = response.data
-      setAlarmsList([...alarmsList, newAlarm])
+      const newAlarm = response.data;
+      setAlarmsList([...alarmsList, newAlarm]);
     })
-  }
+  };
 
 // ------------*** END Component API's ***------------
 
-  
+// ------------*** START EventListeners ***------------
 
-// ------------*** START Other functions ***------------
-  
-  // update inputs
-  const handleChange = (e) => {
-    const {name, value} = e.target
-    setAlarm({...alarm, [name]: value})
+  const mouseEnter = (currentElementId) => {
+    setShowOptions(true)
+    setElementId(currentElementId)
   }
 
-  const handleShowPopup = (data) => {
-    setIsPopupOpened(true)
-    setPopupData(data)
-    setPopupTitle(title)
+  const mouseLeave = () => {
+    setShowOptions(false)
   }
 
-// ------------*** END Other functions ***------------
+// ------------*** END EventListeners ***------------  
 
   return(
     <div className="flex flex-col w-full">
-      <AlarmForm handleChange={handleChange} handleSubmit={handleSubmit}/>
+      <AlarmForm 
+        elementList={setAlarm} 
+        element={alarm} 
+        handleChange={handleChange} 
+        handleSubmit={handleSubmit}/>
       <AlarmList 
         elementList={alarmsList} 
         mouseEnter={mouseEnter} 

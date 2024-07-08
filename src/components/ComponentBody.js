@@ -5,7 +5,7 @@ import MainApi from "../utils/MainApi"
 
 // isDeletedFromPopup={isDeletedFromPopup}
 
-function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, setPopupData, deletedFromPopupData, isDeletedFromPopup, isUpdatedFromPopup}) {
+function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, setIsBlur, setPopupData, deletedFromPopupData, isDeletedFromPopup, isUpdatedFromPopup}) {
   const DynamicComponent = lazy(() => import(`./logbooks/${title}/${title.charAt(0).toUpperCase()}${title.slice(1)}.js`))
   const [room, setRoom] = useState()
   const [roomsList, setRoomsList] = useState(JSON.parse(localStorage.getItem(`${title}`)));
@@ -18,9 +18,14 @@ function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, set
   const valueRef = useRef()
   const valueRef_2 = useRef()
 
-  const handleChange = (e) => {
+  // const handleChange = (e) => {
+  //   const {name, value} = e.target
+  //   setRoom({...room, [name]: value})
+  // }
+
+  const handleChange = (e, elementList, element) => {
     const {name, value} = e.target
-    setRoom({...room, [name]: value})
+    elementList({...element, [name]: value})
   }
 
   useEffect(() => {
@@ -60,6 +65,26 @@ function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, set
     localStorage.setItem(`${title}-last-deleted`, JSON.stringify(deletedElement))
   }
 
+  const handleShowPopup = (data) => {
+    setIsBlur(true)
+    setIsPopupOpened(true)
+    setPopupData(data)
+    setPopupTitle(title)
+  }
+
+  const [showOptions, setShowOptions] = useState(false)
+  const [elementId, setElementId] = useState(null)
+
+  const mouseEnter = (currentElementId) => {
+    setShowOptions(true)
+    setElementId(currentElementId)
+  }
+
+  const mouseLeave = () => {
+    setShowOptions(false)
+  }
+
+
   // const handleDeleteFromPopup = (data) => {
   //   // setIsDeleted(true)
   //   setIsDeletedFromPopup(true)
@@ -81,6 +106,7 @@ function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, set
   }
 
   const [showTooltip, setShowTooltip] = useState(false);
+  
 
   const logbookDescription = {
     alarm: 'This is alarmThis is alarmThis is alarmThis is alarmThis is alarmThis is alarm',
@@ -116,6 +142,8 @@ function ComponentBody ({title, isUnlocked, setPopupTitle, setIsPopupOpened, set
                 valueRef_2 = {valueRef_2}
                 handleChange = {handleChange}
                 setIsPopupOpened = {setIsPopupOpened}
+                handleShowPopup={handleShowPopup}
+                setIsBlur={setIsBlur}
                 setPopupData = {setPopupData}
                 setPopupTitle = {setPopupTitle}
                 savedData = {savedData}
